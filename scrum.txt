@@ -1,0 +1,11 @@
+planning
+phase 1:
+ERD yekshanbe saat 8 ta 10 
+ORM --->milad (SQL ALCHEMY) with logging --->tahvil 3shanbe shab --->age resid schemas pydantic
+fast api---> pasha(schemas,crud(home page,category) , sepehr(post,posts,auth))
+mehdi(front-css-html-talewind)-->home page - join us--->login profile ---> join us change to profile name ---->his blogs , 
+new blog ---> enter to submit blog page(category , subject, textarea , submit button ) , logout - post , posts 
+zahra(jinja templates)--->waiting for mehdi
+unittests-----> harkasi teste marbut be khodesh ba pytest ya unittest
+tasks--->ta 3shanbe shab --->ORM - HOME page html - schemas - ERD
+figma(ux/ui)-->https://www.figma.com/file/YINU2IZPmVLzkm2n61qSEg/Blog-Test?node-id=0%3A420&t=KRL3dddalH9nsfQA-0
