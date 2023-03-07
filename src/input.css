@@ -3,3 +3,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.nav_item {
+    @apply mx-8 justify-center font-semibold
+}
+
+
+.card{
+    @apply bg-white rounded overflow-hidden relative;
+}
+.badge{
+    @apply bg-secondary-100 text-secondary-200 text-xs font-bold rounded-full p-2 absolute top-0 ml-2 mt-2;
+}
+
+.btn{
+    @apply rounded-full py-2 px-3 uppercase text-xs font-bold cursor-pointer tracking-wider;
+}
