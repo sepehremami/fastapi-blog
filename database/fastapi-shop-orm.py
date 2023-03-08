@@ -1,12 +1,15 @@
 from sqlalchemy import create_engine,Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy_utils import database_exists, create_database
 
 from sqlalchemy.sql import func
 from datetime import datetime
-
-engine = create_engine("postgresql://postgres:None@localhost/mydatabase")#postgrese khodet
-sqlsession = sessionmaker(bind=engine)
+SQLALCHEMY_DATABASE_URL= " postgresql://postgres:None@localhost/mydatabase"
+engine = create_engine(SQLALCHEMY_DATABASE_URL)#postgrese khodet
+if not database_exists(engine.url):
+    create_database(engine.url)
+sqlsession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
@@ -73,3 +76,10 @@ class Comment(Base):
     post = relationship("Post", back_populates="comments")
 
 Base.metadata.create_all(bind=engine)
+
+def get_db():
+    db=sqlsession()
+    try:
+        yield db
+    finally:
+        db.close()
