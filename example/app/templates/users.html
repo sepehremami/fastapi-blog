@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+          font-weight : bold;
+        }
+        .done {
+            color :green;
+            font-weight:bold;
+        }
+        .not-done {
+            color :red;
+            font-weight:bold;
+        }
+        </style>
+</head>
+
+<body>
+<!-- 
+<h1>{{request}}</h1> -->
+<h1>Users</h1>
+{{request}}
+<table> 
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>username</th>
+            <th>email</th>
+            <th>Creation date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email or '-'}}</td>
+            <td>{{user.created_at}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
+
+
+
