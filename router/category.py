@@ -42,10 +42,10 @@ async def delete_category(id: int, db: Session=Depends(get_db)):
     return {"data":"category deleted"}
 
 @router.put("/{id}")
-def update_category(id:int, updated_user:category.Category, db: Session=Depends(get_db)):
+async def update_category(id:int, updated_category:category.Category, db: Session=Depends(get_db)):
     category = db.query(Category).filter(Category.id == id)
     if not category.first():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="user with id {id} does not exit")
-    category.update(updated_user.dict(), synchronize_session=False)
+    category.update(updated_category.dict(), synchronize_session=False)
