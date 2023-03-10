@@ -1,6 +1,0 @@
-tarahi home page mesle link(navbar-searchbox)
-tarahi page baraye post ha(yeseri ghesmata statice yeseria dynamice)
-tarahi ghesmate categorie(inja faghat post haye har categorie neshan dade mishe)
-
-
-
