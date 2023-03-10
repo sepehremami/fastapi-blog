@@ -1,39 +1,19 @@
-from fastapi import FastAPI, Request, Form
-from schema.user_schema import User
-from schema.post_schema import Post
-from schema.category_schema import Category
-from schema.comment_schema import Comment
+from fastapi import FastAPI, Request, Form 
+from database.database import Base,engine
+from router import routers
 
-
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-@app.get("/home-page")
-def landing():
-    return {'msg' : 'home page'}
+@app.get("/", status_code=200)
+def root():
+    return {'message: hello'}
 
-@app.get("/sign-in")
-def sign_in(): 
-    return {'msg': 'sign-in page'}
-
-@app.get("/sign-up")
-def sign_up():
-    return {'msg' : 'sign-up page'}
-
-@app.get('/posts')
-def show_posts():
-    return {'msg': 'post page with all post'}
-
-@app.get("/posts/")
-def show_posts(post_id:int):
-    return {'msg':f'one post whit this id: {post_id}'}
-
-@app.get("/about-us")
-def about():
-    return {'msg':'about us page'}
-
-@app.get("/contact")
-def contact():
-    return {'msg':'contact page'}
+app.include_router(routers.router)
 
 
+if __name__ == "__main__":
+    # Use this for debugging purposes only
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001, log_level="debug")
