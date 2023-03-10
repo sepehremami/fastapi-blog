@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, APIRouter, Depends
-from ..schema.post_schema import Posts
+from schema.post_schema import Posts
 from ..database.fastapi_shop_orm import Post, get_db
 from sqlalchemy.orm import Session
 
