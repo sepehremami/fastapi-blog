@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Post(BaseModel):
+class Posts(BaseModel):
     title:str
     description:str
     

@@ -9,6 +9,12 @@ engine = create_engine("postgresql://postgres:None@localhost/mydatabase")#postgr
 sqlsession = sessionmaker(bind=engine)
 Base = declarative_base()
 
+def get_db():
+    db = sqlsession()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # User Model
 class User(Base):
