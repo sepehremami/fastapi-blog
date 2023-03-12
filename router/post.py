@@ -23,9 +23,9 @@ def get_user_posts(
         limit:int=10,
         search: Optional[str]=""):
 
-    posts: List[PostBase] = db.query(PostBase).\
-        filter(PostBase.user_id==current_user.id).\
-        filter(PostBase.title.contains(search)).\
+    posts: List[Post] = db.query(Post).\
+        filter(Post.user_id==current_user.id).\
+        filter(Post.title.contains(search)).\
         limit(limit).offset(skip).all()
     
     return posts
@@ -33,9 +33,11 @@ def get_user_posts(
 
 @router.get("/{id}", status_code=200)
 def get_post(
+        id:int,
         db: Session = Depends(get_db),
         current_user: User = Depends(oauth2.get_current_user)):
-    post = db.query(PostBase).filter(PostBase.user_id==id).first()
+    
+    post = db.query(Post).filter(Post.id==id).first()
     if not post:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
