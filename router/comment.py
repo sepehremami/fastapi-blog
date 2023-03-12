@@ -4,7 +4,7 @@ from database.database import get_db
 from sqlalchemy.orm import Session
 from database.models import Comment, User 
 from typing import List
-from schema.comment import CommentBase, CommentOauth
+from schema.comment import CommentBase
 
 router = APIRouter(prefix="/comment", tags=["Comment"])
 
@@ -40,7 +40,7 @@ def get_comment(
     return {'message': comment}
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
-def create_comment(new_comment : CommentOauth, 
+def create_comment(new_comment : CommentBase, 
                    db :Session = Depends(get_db),
                    current_user : User = Depends(oauth2.get_current_user)):
     comment_information = new_comment.dict()

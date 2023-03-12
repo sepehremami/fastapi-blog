@@ -12,12 +12,5 @@ class PostBase(BaseModel):
     class Config:
         orm_mode = True
 
-class PostOauth(BaseModel):
-    title: str
-    description: str
-    class Config:
-        orm_mode = True
-
-    
 
 

@@ -1,2 +1,2 @@
 # fastapi-shop
-This project simulates online shope.
+This project simulates online shop.
