@@ -11,6 +11,7 @@ class UserBase(BaseModel):
         orm_mode = True
 
 class UserOut(BaseModel):
+    id:int
     username: str
     email: str
     created_at: datetime

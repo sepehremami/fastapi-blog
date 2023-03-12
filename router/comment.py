@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 import oauth2
 from database.database import get_db
 from sqlalchemy.orm import Session
-from database.models import User 
+from database.models import Comment, User 
 from typing import List
 from schema.comment import CommentBase, CommentOauth
 
@@ -16,7 +16,7 @@ def get_user_comments(
         skip: int = 0,
         limit: int = 10
         ):
-    comment = db.query(CommentBase).filter(CommentBase.user_id==current_user.id).limit(limit).offset(skip).all()
+    comment = db.query(Comment).filter(Comment.user_id==current_user.id).limit(limit).offset(skip).all()
     return comment
 
 
@@ -26,7 +26,7 @@ def get_comment(
         id : int,
         db: Session = Depends(get_db),
         current_user: User = Depends(oauth2.get_current_user)):
-    comment = db.query(CommentBase).filter(CommentBase.user_id==id).first()
+    comment = db.query(Comment).filter(Comment.user_id==id).first()
     if not comment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -45,7 +45,7 @@ def create_comment(new_comment : CommentOauth,
                    current_user : User = Depends(oauth2.get_current_user)):
     comment_information = new_comment.dict()
     comment_information.update({"user_id":current_user.id})
-    comment = comment(**comment_information)
+    comment = Comment(**comment_information)
     db.add(comment)
     db.commit()
     db.refresh(comment)
@@ -55,7 +55,7 @@ def create_comment(new_comment : CommentOauth,
 @router.delete("/{id}")
 def delete_comment(id: int, db: Session = Depends(get_db),
                    current_user : User = Depends(oauth2.get_current_user)):
-    comment = db.query(CommentBase).filter(CommentBase.id == id)
+    comment = db.query(Comment).filter(Comment.id == id)
     if not comment.first():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
