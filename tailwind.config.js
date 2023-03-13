@@ -3,7 +3,8 @@ module.exports = {
   content: [
       "src/home.{html,js}",
       "src/Login.{html,js}",
-      "src/Blog.{html,js}"
+      "src/Blog.{html,js}",
+      "src/Profile.{html,js}"
   ],
   theme: {
     extend: {

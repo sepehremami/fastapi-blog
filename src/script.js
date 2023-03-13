@@ -18,3 +18,14 @@ filter.addEventListener('click', () => {
         filter_menu.classList.add('hidden');
     }
 })
+
+const burger1 = document.querySelector('#burger');
+const menu1 = document.querySelector('#menu');
+
+burger1.addEventListener('click', () => {
+    if (menu1.classList.contains('hidden')) {
+        menu1.classList.remove('hidden');
+    } else {
+        menu1.classList.add('hidden');
+    }
+})
