@@ -4,10 +4,17 @@ module.exports = {
       "src/home.{html,js}",
       "src/Login.{html,js}",
       "src/Blog.{html,js}",
-      "src/Profile.{html,js}"
+      "src/Profile.{html,js}",
+      "src/my_posts.{html,js}"
   ],
   theme: {
     extend: {
+      margin:{
+        "40p":"40%",
+        "30p":"30%",
+        "20p":"20%",
+        "10p":"10%",
+      },
       height:{
         1300: "1300px",
       },
