@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      height:{
+        1300: "1300px",
+      },
       backgroundImage:{
 
       },

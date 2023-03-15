@@ -9,8 +9,8 @@
 <body class="font-body bg-slate-200 dark:bg-gradient-to-b dark:from-secondary-1 dark:to-primary">
 
 
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
-<script src="script.js"></script>
+
+
 
 
     <div class="">
@@ -58,23 +58,23 @@
     </div>
 
     <!-- End of Navbar -->
-    <main class="grid grid-cols-5">
-        <div class="col-span-1 h-full w-full bg-slate-200 dark:bg-gradient-to-t dark:from-slate-900 dark:to-secondary-2">
+    <main class="grid grid-cols-5 ">
+        <div class="col-span-1 h-1300 md:h-full w-full bg-slate-200 dark:bg-gradient-to-t dark:from-slate-900 dark:to-secondary-2">
             <div class="md:col-span-1 md:flex md:justify-end">
                 <nav class="text-right">
                     <div class="flex justify-between items-center border-b border-gray-100 dark:border-primary w-full">
                         <h1 class="font-bold uppercase p-4  ">
                             <p class="dark:text-slate-200">Profile</p>
                         </h1>
-                        <div class="px-4 cursor-pointer md:hidden" id="burger">
+                        <div class="px-4 cursor-pointer md:hidden" id="burger1">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
                         </div>
                     </div>
 
-                    <ul class="text-sm mt-6 hidden md:block" id="menu">
-                        <li class="text-gray-700 uppercase py-1 hover:bg-gray-200 transition ease-out duration-500  ">
+                    <ul class="text-sm mt-6 " id="menu1">
+                        <li class="text-gray-700 dark:text-gray-100 uppercase py-1 hover:bg-gray-200 dark:hover:bg-primary transition ease-out duration-500  ">
                             <a href="#" class="px-4 flex justify-end ">
                                 <span>MY PROFILE</span>
                                 <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
@@ -83,7 +83,7 @@
 
                             </a>
                         </li>
-                        <li class="py-1 hover:bg-gray-200 transition ease-out duration-500   hover:border-gray-400">
+                        <li class="py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500   hover:border-gray-400">
                             <a href="#" class="px-4 flex justify-end  ">
                                 <span>MY Posts</span>
                                 <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
@@ -92,7 +92,7 @@
 
                             </a>
                         </li>
-                        <li class="py-1 hover:bg-gray-200 transition ease-out duration-500 hover:border-gray-400">
+                        <li class="py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500 hover:border-gray-400">
                             <a href="#" class="px-4 flex justify-end  ">
                                 <span>Setting</span>
                                 <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
@@ -113,19 +113,19 @@
             <!-- Left Side -->
             <div class="w-full md:w-3/12 md:mx-2">
                 <!-- Profile Card -->
-                <div class="bg-white p-3 border-t-4 border-green-400">
+                <div class="dark:bg-slate-900 bg-white p-3 border-t-4 border-green-400">
                     <div class="image overflow-hidden">
                         <img class="h-auto w-full mx-auto"
                              src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
                              alt="">
                     </div>
-                    <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">Jane Doe</h1>
+                    <h1 class="text-gray-900 dark:text-gray-200 font-bold text-xl leading-8 my-1">Jane Doe</h1>
                     <h3 class="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
                     <p class="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit amet
                         consectetur adipisicing elit.
                         Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non deserunt</p>
                     <ul
-                            class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
+                            class="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-200 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                         <li class="flex items-center py-3">
                             <span>Status</span>
                             <span class="ml-auto"><span
@@ -140,8 +140,8 @@
                 <!-- End of profile card -->
                 <div class="my-4"></div>
                 <!-- Friends card -->
-                <div class="bg-white p-3 hover:shadow">
-                    <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
+                <div class="bg-white dark:bg-slate-900 p-3 hover:shadow">
+                    <div class="flex items-center space-x-3 font-semibold text-gray-900 dark:text-gray-200 text-xl leading-8">
                         <span class="text-green-500">
                             <svg class="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
                                  viewBox="0 0 24 24" stroke="currentColor">
@@ -151,8 +151,8 @@
                         </span>
                         <span>Similar Profiles</span>
                     </div>
-                    <div class="grid grid-cols-3">
-                        <div class="text-center my-2">
+                    <div class="grid grid-cols-3 dark:text-gray-200">
+                        <div class="text-center  my-2">
                             <img class="h-16 w-16 rounded-full mx-auto"
                                  src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg"
                                  alt="">
@@ -184,8 +184,8 @@
             <div class="w-full md:w-9/12 mx-2 h-64">
                 <!-- Profile tab -->
                 <!-- About Section -->
-                <div class="bg-white p-3 shadow-sm rounded-sm">
-                    <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                <div class="bg-white dark:bg-slate-900 p-3 shadow-sm rounded-sm">
+                    <div class="flex items-center space-x-2 font-semibold text-gray-900 dark:text-gray-200 leading-8">
                         <span class="text-green-500">
                             <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
@@ -195,7 +195,7 @@
                         </span>
                         <span class="tracking-wide">About</span>
                     </div>
-                    <div class="text-gray-700">
+                    <div class="text-gray-700 dark:text-gray-200">
                         <div class="grid md:grid-cols-2 text-sm">
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold">First Name</div>
@@ -234,7 +234,7 @@
                         </div>
                     </div>
                     <button
-                            class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
+                            class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-secondary-3 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
                         Full Information</button>
                 </div>
                 <!-- End of about section -->
@@ -242,11 +242,11 @@
                 <div class="my-4"></div>
 
                 <!-- Experience and education -->
-                <div class="bg-white p-3 shadow-sm rounded-sm">
+                <div class="bg-white dark:bg-slate-900 p-3 shadow-sm rounded-sm">
 
                     <div class="grid grid-cols-2">
                         <div>
-                            <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                            <div class="flex items-center space-x-2 font-semibold text-gray-900 dark:text-gray-200 leading-8 mb-3">
                                 <span class="text-green-500">
                                     <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke="currentColor">
@@ -276,7 +276,7 @@
                             </ul>
                         </div>
                         <div>
-                            <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8 mb-3">
+                            <div class="flex items-center space-x-2 font-semibold text-gray-900 dark:text-gray-200 leading-8 mb-3">
                                 <span class="text-green-500">
                                     <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke="currentColor">
@@ -348,6 +348,6 @@
     </div>
 
 </footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
