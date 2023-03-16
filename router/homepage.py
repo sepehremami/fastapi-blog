@@ -3,13 +3,15 @@ from fastapi.templating import Jinja2Templates
 from database.database import get_db
 from sqlalchemy.orm import Session
 from database.models import Post
-
+from pathlib import Path
 router = APIRouter(
     prefix="/home-page",
     tags=["HomePage"]
     )
+BASE_PATH = Path(__file__).resolve().parent.parent
 
-template = Jinja2Templates(directory="mehdi/src")
+path = f"{BASE_PATH}/templates"
+template = Jinja2Templates(directory=path)
 
 @router.get('/')
 async def home(request:Request, db: Session = Depends(get_db)):
