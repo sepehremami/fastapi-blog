@@ -8,16 +8,18 @@ from sqlalchemy.orm import Session
 from config import settings
 from schema import user, token
 
+
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login",
     scheme_name="JWT")
 
+
 SECRET_KEY = settings.secret_key
 ALGORYTHM = settings.algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = int(settings.access_tocken_expire_minutes)
-# $2b$12$g3iOlG9P92a1/K1Uxl8jJObg2Wm2dwbNbftDYjqsIlXK4fl08alGy
 
-def create_access_tocken(data:dict): # {"user_id": user.id, "exp": expire}
+
+def create_access_tocken(data:dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
@@ -25,17 +27,14 @@ def create_access_tocken(data:dict): # {"user_id": user.id, "exp": expire}
     return encoded_jwt
 
 
-
 def get_current_user(access_token = Depends(oauth2_scheme), db:Session = Depends(get_db)):
-    # print(token)
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="could not validate credentials",
         headers={"WWW-Authenticate":"Bearer"})
 
     try:
-        # payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORYTHM])
-        # email: str = payload.get("email")
         payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORYTHM])
         user_id: str = payload.get("user_id")
 
@@ -49,6 +48,3 @@ def get_current_user(access_token = Depends(oauth2_scheme), db:Session = Depends
         raise credentials_exception
     return current_user
 
-    # get_tocken =  verify_access_tocken(tocken, credentials_exception)
-    # user = db.query(models.User).filter(models.User.id == get_tocken.id).first()
-    # return user

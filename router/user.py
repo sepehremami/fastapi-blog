@@ -8,7 +8,7 @@ import utils
 from fastapi.templating import Jinja2Templates
 from schema.user import UserBase, UserCreate
 
-# cntrl + d 
+
 router = APIRouter(
     tags=['Users']
 )
@@ -22,7 +22,7 @@ templates = Jinja2Templates(directory=path)
 async def get_users(request: Request , db: Session = Depends(get_db)):
     users: List[UserBase] = db.query(User).all()
     return users
-    # return templates.TemplateResponse("users.html", {"request": request, "users": users})
+
 
 @router.get("/mypost")
 async def get_users(request: Request , db: Session = Depends(get_db)):
