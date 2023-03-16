@@ -1,3 +1,4 @@
+
 from sqlalchemy import Boolean, create_engine, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from database.database import Base
@@ -8,6 +9,7 @@ class Post(Base):
     __tablename__ = 'post'
 
     id = Column(Integer, primary_key=True)
+
     title = Column(String)
     description = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow())
@@ -22,10 +24,13 @@ class Post(Base):
     comments = relationship("Comment", back_populates="post")
 
 
+
+
 class Category(Base):
     __tablename__ = 'category'
 
     id = Column(Integer, primary_key=True)
+
     name = Column(String)
 
     # Relationship with Post models
@@ -33,10 +38,13 @@ class Category(Base):
 
 
 
+
+
 class Comment(Base):
     __tablename__ = 'comment'
 
     id = Column(Integer, primary_key=True)
+
     parent_id = Column(Integer, default=None)
     description = Column(String)
     confirmed = Column(Boolean, default=False)
@@ -48,6 +56,8 @@ class Comment(Base):
     # Relationship with User and Post models
     user = relationship("User", back_populates="comments")
     post = relationship("Post", back_populates="comments")
+
+
 
 
 
@@ -66,3 +76,4 @@ class User(Base):
     # Relationship with Post and Comment models
     posts = relationship("Post", back_populates="user")
     comments = relationship("Comment", back_populates="user")
+
