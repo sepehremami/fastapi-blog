@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
 from utils import verify
+
 router = APIRouter(tags=['Authentication'])
 
 
@@ -24,15 +25,15 @@ path = "../templates"
 path_static = "../static/"
 templates = Jinja2Templates(directory=str(path))
 
+
 @router.get("/login")
 def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 
-
 @router.post('/login')
 async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
-    user: UserBase = db.query(User).filter(User.email==user_credentials.username).first()
+    user = db.query(User).filter(User.email==user_credentials.username).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -48,3 +49,41 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Sess
     return {"access_token":access_tocken, "tocken_type": "bearer"}
 
 
+@router.post("/register")
+def register(
+        *,
+        db: Session = Depends(get_db),
+        username: str,
+        email: str,
+        password: str,
+        phone: str = None,
+        image: str = None):
+    
+    if db.query(User).filter(User.username == username).first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username already taken"
+        )
+    if db.query(User).filter(User.email == email).first():
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Email already registered"
+        )
+
+    
+    hashed_password = utils.hash(password)
+    new_user = User(
+        username=username,
+        email=email,
+        phone=phone,
+        image=image,
+        password=hashed_password
+    )
+
+    
+    db.add(new_user)
+    db.commit()
+
+    
+    access_token = oauth2.create_access_tocken(data={"user_id": new_user.id})
+    return {"access_token": access_token, "token_type": "bearer"}

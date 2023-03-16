@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from database.models import Post, User 
 from fastapi.templating import Jinja2Templates
-from schema.post import PostBase
+from schema.post import PostBase, PostCreate
 import oauth2
 from schema.user import UserBase
 
@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[PostBase])
+@router.get("/")
 def get_user_posts(
         db: Session = Depends(get_db), 
         current_user: User = Depends(oauth2.get_current_user),
@@ -52,12 +52,11 @@ def get_post(
 
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
-async def create_post(new_post: PostBase,
+async def create_post(new_post: PostCreate,
                     db: Session = Depends(get_db),
                     current_user = Depends(oauth2.get_current_user)):
     post_information = new_post.dict()
     post_information.update({"user_id":current_user.id})
-    print(post_information)
     post = Post(**post_information)
     db.add(post)
     db.commit()
@@ -87,7 +86,7 @@ def delete_post(id: int, db: Session=Depends(get_db),
 
 
 @router.put('/{post_id}')
-async def update_post(post_update: PostBase, post_id:int, db: Session = Depends(get_db),
+async def update_post(post_update: PostCreate, post_id:int, db: Session = Depends(get_db),
                 current_user: User = Depends(oauth2.get_current_user)):
     post = db.query(Post).filter(Post.id == post_id)
     if not post.first():

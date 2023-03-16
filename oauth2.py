@@ -6,10 +6,7 @@ from database import models
 from database.database import get_db
 from sqlalchemy.orm import Session
 from config import settings
-from schema import user
-# Secret Key
-# Algorithem
-# Expiration
+from schema import user, token
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/login",
@@ -28,22 +25,8 @@ def create_access_tocken(data:dict): # {"user_id": user.id, "exp": expire}
     return encoded_jwt
 
 
-def verify_access_tocken(tocken, credentials_exception):
-    try:
-        payload = jwt.decode(tocken, SECRET_KEY, algorithms=[ALGORYTHM])
-        email  = payload.get("email")
-        print(email)
-        print(f'email:{email}')
-        if id is None:
-            raise credentials_exception
-        tocken_data = user.TockenData(username=email)
-    except JWTError:
-        raise credentials_exception
-    return tocken_data
 
-
-
-def get_current_user(token = Depends(oauth2_scheme), db:Session = Depends(get_db)):
+def get_current_user(access_token = Depends(oauth2_scheme), db:Session = Depends(get_db)):
     # print(token)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -53,15 +36,15 @@ def get_current_user(token = Depends(oauth2_scheme), db:Session = Depends(get_db
     try:
         # payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORYTHM])
         # email: str = payload.get("email")
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORYTHM])
-        email: str = payload.get("email")
-        print(email)
-        if email is None:
+        payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORYTHM])
+        user_id: str = payload.get("user_id")
+
+        if user_id is None:
             raise credentials_exception
-        token_data = user.TokenData(username=email)
+        token_data = token.TokenData(username=user_id)
     except JWTError:
         raise credentials_exception
-    current_user = db.query(models.User).filter(models.User.email == email).first()
+    current_user = db.query(models.User).filter(models.User.id == user_id).first()
     if current_user is None:
         raise credentials_exception
     return current_user

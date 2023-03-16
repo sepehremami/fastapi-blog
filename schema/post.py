@@ -4,13 +4,16 @@ from database.models import User
 from schema.user import UserBase, UserOut
 
 
-class PostBase(BaseModel):
-    id: int
+class PostCreate(BaseModel):
+
     title:str
     description:str
-    user:UserOut
-    class Config:
-        orm_mode = True
 
+
+class PostBase(PostCreate):
+    id:int
+    user:UserOut
+    class Cofing:
+        orm_mode = True
 
 

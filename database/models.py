@@ -15,11 +15,11 @@ class Post(Base):
     created_at = Column(DateTime, default=datetime.utcnow())
 
     # Foreign Keys
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
     category_id = Column(Integer, ForeignKey('category.id'))
 
     # Relationship with User and Comment models
-    user = relationship("User", back_populates="posts")
+    users = relationship("User", back_populates="posts")
     category = relationship("Category", back_populates="posts")
     comments = relationship("Comment", back_populates="post")
 
@@ -50,11 +50,11 @@ class Comment(Base):
     confirmed = Column(Boolean, default=False)
 
     # Foreign Keys
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
     post_id = Column(Integer, ForeignKey('post.id'))
 
     # Relationship with User and Post models
-    user = relationship("User", back_populates="comments")
+    users = relationship("User", back_populates="comments")
     post = relationship("Post", back_populates="comments")
 
 
@@ -62,7 +62,7 @@ class Comment(Base):
 
 
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, index=True)
@@ -74,6 +74,6 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow())
 
     # Relationship with Post and Comment models
-    posts = relationship("Post", back_populates="user")
-    comments = relationship("Comment", back_populates="user")
+    posts = relationship("Post", back_populates="users")
+    comments = relationship("Comment", back_populates="users")
 
