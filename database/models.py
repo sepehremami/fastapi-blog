@@ -1,40 +1,15 @@
-from sqlalchemy import create_engine,Boolean, Column, ForeignKey, Integer, String, DateTime
+
+from sqlalchemy import Boolean, create_engine, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy_utils import database_exists, create_database
-
-from sqlalchemy.sql import func
+from database.database import Base
 from datetime import datetime
-SQLALCHEMY_DATABASE_URL= " postgresql://postgres:None@localhost/mydatabase"
-engine = create_engine(SQLALCHEMY_DATABASE_URL)#postgrese khodet
-if not database_exists(engine.url):
-    create_database(engine.url)
-sqlsession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
 
 
-# User Model
-class User(Base):
-    __tablename__ = 'user'
-
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
-    phone = Column(String)
-    image = Column(String)
-    password = Column(String)
-    is_superuser = Column(Boolean, default=False)
-    created_at = Column(DateTime, default=datetime.utcnow())
-
-    # Relationship with Post and Comment models
-    posts = relationship("Post", back_populates="user")
-    comments = relationship("Comment", back_populates="user")
-
-# Post Model
 class Post(Base):
     __tablename__ = 'post'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
+
     title = Column(String)
     description = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow())
@@ -48,21 +23,28 @@ class Post(Base):
     category = relationship("Category", back_populates="posts")
     comments = relationship("Comment", back_populates="post")
 
-# Category Model
+
+
+
 class Category(Base):
     __tablename__ = 'category'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
+
     name = Column(String)
 
     # Relationship with Post models
     posts = relationship("Post", back_populates="category")
 
-# Comment Model
+
+
+
+
 class Comment(Base):
     __tablename__ = 'comment'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True)
+
     parent_id = Column(Integer, default=None)
     description = Column(String)
     confirmed = Column(Boolean, default=False)
@@ -75,11 +57,23 @@ class Comment(Base):
     user = relationship("User", back_populates="comments")
     post = relationship("Post", back_populates="comments")
 
-Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db=sqlsession()
-    try:
-        yield db
-    finally:
-        db.close()
+
+
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
+    phone = Column(String)
+    image = Column(String)
+    password = Column(String)
+    is_superuser = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow())
+
+    # Relationship with Post and Comment models
+    posts = relationship("Post", back_populates="user")
+    comments = relationship("Comment", back_populates="user")
+
