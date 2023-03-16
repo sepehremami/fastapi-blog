@@ -13,15 +13,22 @@ router = APIRouter(
     tags=['Users']
 )
 
-BASE_PATH = Path(__file__).resolve().parent
+BASE_PATH = Path(__file__).resolve().parent.parent
 
-templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
+path = f"{BASE_PATH}/templates"
+templates = Jinja2Templates(directory=path)
 
 @router.get("/users")
 async def get_users(request: Request , db: Session = Depends(get_db)):
     users: List[UserBase] = db.query(User).all()
     return users
     # return templates.TemplateResponse("users.html", {"request": request, "users": users})
+
+@router.get("/mypost")
+async def get_users(request: Request , db: Session = Depends(get_db)):
+    users: List[UserBase] = db.query(User).all()
+
+    return templates.TemplateResponse("myPosts.html", {"request": request, "users": users})
 
 
 @router.get("/users/{id}")
