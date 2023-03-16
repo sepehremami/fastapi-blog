@@ -9,21 +9,23 @@ from fastapi.templating import Jinja2Templates
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
 from utils import verify
-
+import os
+# os.system("pwd")
 router = APIRouter(tags=['Authentication'])
-
-
 
 
 from pathlib import Path
 
 
-BASE_PATH = Path(__file__).resolve().parent
+BASE_PATH = Path(__file__).resolve().parent.parent
 print(BASE_PATH)
 router = APIRouter(tags=['Authentication'])
-path = "../templates"
-path_static = "../static/"
-templates = Jinja2Templates(directory=str(path))
+
+path = f"{BASE_PATH}/templates"
+
+path_static = f"{BASE_PATH}/static/"
+
+templates = Jinja2Templates(directory=path)
 
 
 @router.get("/login")
@@ -47,6 +49,13 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Sess
     access_tocken = oauth2.create_access_tocken(data={"user_id": user.id})
 
     return {"access_token":access_tocken, "tocken_type": "bearer"}
+
+
+@router.get("/me")
+def get_login_user(
+    request: Request,
+    current_user = Depends(oauth2.get_current_user)):
+    return templates.TemplateResponse('profile.html', {"request": request})
 
 
 @router.post("/register")

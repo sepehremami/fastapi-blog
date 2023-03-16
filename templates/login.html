@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <link rel="stylesheet" href="{{url_for('static', path='app.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', path='search-style.css') }}">
+  
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body class="font-body">
+  
   <div class="">
     <nav class="bg-primary border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
       <div class="container flex flex-wrap items-center justify-between mx-auto">
@@ -54,15 +56,15 @@
 
         <h1 class="text-xl md:text-2xl font-bold leading-tight mt-12 dark:text-slate-200">Log in to your account</h1>
 
-        <form class="mt-6" action="{{get_user}}" method="POST">
+        <form id="first" class="mt-6" action="" method="post">
           <div>
             <label class="block text-gray-700 dark:text-slate-200" for="input1">Email Address</label>
-            <input type="email" name="" id="input1" placeholder="Enter Email Address" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autofocus autocomplete required>
+            <input type="email" name="username" id="username" placeholder="Enter Email Address" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autofocus autocomplete required>
           </div>
 
           <div class="mt-4">
             <label class="block text-gray-700 dark:text-slate-200" for="input2">Password</label>
-            <input type="password" name="" id="input2" placeholder="Enter Password" minlength="6" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
+            <input type="password" name="password" id="password" placeholder="Enter Password" minlength="6" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                   focus:bg-white focus:outline-none" required>
           </div>
 
@@ -70,7 +72,7 @@
             <a href="#" class="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700 dark:text-slate-200">Forgot Password?</a>
           </div>
 
-          <button type="submit" class="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+          <button type="submit" class="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg 
                 px-4 py-3 mt-6 dark:bg-primary">Log In</button>
         </form>
 
@@ -129,5 +131,68 @@
     </div>
 
   </footer>
+  <script>
+
+    const form = document.getElementById('first');
+    // console.log(form);
+
+
+    form.addEventListener('submit',event=> {
+      event.preventDefault();
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+      const formdata = new FormData();
+      formdata.append("username", `${username}`);
+      formdata.append("password",  `${password}`);
+      const response = axios.post("/login", formdata);
+      // console.log(response);
+      response.then(
+      function (response) {
+                
+        const access_tocken_user = response.data.access_token;
+
+
+        // axios get request
+
+        const inner_call = axios.get("/me", {
+          headers:  {
+            "authorization" : `Bearer ${access_tocken_user}`
+          }});
+        inner_call.then(
+          response => {
+            // console.log(response.data)
+          }
+        );
+        
+
+
+        const options = {
+            method: "get", 
+           
+            headers: {
+              "Content-Type": "application/json",
+              "authorization" : `Bearer ${access_tocken_user}`
+
+             
+            }
+           
+          };
+        function navigate  () {
+          location.replace("http://0.0.0.0:8000/me")
+        };
+        fetch("http://0.0.0.0:8000/me", options)
+        .then(function(response) {
+          return response.text();
+        })
+        .then(function(data) {
+          // var newWindow = .open();
+          window.document.write(data);
+        });
+    });
+  })
+    
+    
+
+  </script>
 </body>
 </html>
