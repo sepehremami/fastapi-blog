@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from database.models import Post, User 
 from fastapi.templating import Jinja2Templates
-from schema.post import PostBase, PostOauth
+from schema.post import PostBase
 import oauth2
 from schema.user import UserBase
 
@@ -52,7 +52,7 @@ def get_post(
 
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
-async def create_post(new_post: PostOauth,
+async def create_post(new_post: PostBase,
                     db: Session = Depends(get_db),
                     current_user = Depends(oauth2.get_current_user)):
     post_information = new_post.dict()
@@ -66,9 +66,9 @@ async def create_post(new_post: PostOauth,
 
 
 @router.delete("/{id}")
-def delete_user(id: int, db: Session=Depends(get_db),
+def delete_post(id: int, db: Session=Depends(get_db),
                 current_user: User = Depends(oauth2.get_current_user)):
-    post = db.query(Post).filter(PostBase.id == id)
+    post = db.query(Post).filter(Post.id == id)
     if not post.first():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
