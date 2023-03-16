@@ -6,6 +6,7 @@ from database.models import Comment, User
 from typing import List
 from schema.comment import CommentBase
 
+
 router = APIRouter(prefix="/comment", tags=["Comment"])
 
 
@@ -18,7 +19,6 @@ def get_user_comments(
         ):
     comment = db.query(Comment).filter(Comment.user_id==current_user.id).limit(limit).offset(skip).all()
     return comment
-
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
@@ -38,6 +38,7 @@ def get_comment(
             detail="Operation not permitted"
         )
     return {'message': comment}
+
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
 def create_comment(new_comment : CommentBase, 
