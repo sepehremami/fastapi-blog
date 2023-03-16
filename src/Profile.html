@@ -59,8 +59,8 @@
 
     <!-- End of Navbar -->
     <main class="grid grid-cols-5 ">
-        <div class="col-span-1 h-1300 md:h-full w-full bg-slate-200 dark:bg-gradient-to-t dark:from-slate-900 dark:to-secondary-2">
-            <div class="md:col-span-1 md:flex md:justify-end">
+        <div class="col-span-1 h-full w-full bg-slate-200 dark:bg-gradient-to-t dark:from-slate-900 dark:to-secondary-2" id="menu1">
+            <div class="md:col-span-1 md:flex md:justify-end" >
                 <nav class="text-right">
                     <div class="flex justify-between items-center border-b border-gray-100 dark:border-primary w-full">
                         <h1 class="font-bold uppercase p-4  ">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
 
-                    <ul class="text-sm mt-6 " id="menu1">
+                    <ul class="text-sm mt-6 " >
                         <li class="text-gray-700 dark:text-gray-100 uppercase py-1 hover:bg-gray-200 dark:hover:bg-primary transition ease-out duration-500  ">
                             <a href="#" class="px-4 flex justify-end ">
                                 <span>MY PROFILE</span>
@@ -105,6 +105,11 @@
                 </nav>
             </div>
 
+        </div>
+        <div class="p-4 cursor-pointer dark:text-slate-200 hidden" id="burger2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
         </div>
         <!--end of sidebar-->
 
@@ -372,5 +377,6 @@
 
     </footer>
     <script src="main_nav.js"></script>
+    <script src="profile_menu.js"></script>
 </body>
 </html>
