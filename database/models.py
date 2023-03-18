@@ -25,7 +25,6 @@ class Post(Base):
 
 
 
-
 class Category(Base):
     __tablename__ = 'category'
 
@@ -35,8 +34,6 @@ class Category(Base):
 
     # Relationship with Post models
     posts = relationship("Post", back_populates="category")
-
-
 
 
 
@@ -56,8 +53,6 @@ class Comment(Base):
     # Relationship with User and Post models
     users = relationship("User", back_populates="comments")
     post = relationship("Post", back_populates="comments")
-
-
 
 
 

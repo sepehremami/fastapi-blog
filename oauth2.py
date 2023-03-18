@@ -35,12 +35,12 @@ def get_current_user(access_token = Depends(oauth2_scheme), db:Session = Depends
         headers={"WWW-Authenticate":"Bearer"})
 
     try:
-        payload = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORYTHM])
+        payload: dict = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORYTHM])
         user_id: str = payload.get("user_id")
 
         if user_id is None:
             raise credentials_exception
-        token_data = token.TokenData(username=user_id)
+        
     except JWTError:
         raise credentials_exception
     current_user = db.query(models.User).filter(models.User.id == user_id).first()

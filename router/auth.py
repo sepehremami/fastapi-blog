@@ -28,13 +28,13 @@ path_static = f"{BASE_PATH}/static/"
 templates = Jinja2Templates(directory=path)
 
 
-@router.get("/login")
+@router.get("/login/")
 def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 
-@router.post('/login')
-async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
+@router.post('/login/')
+def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
     user = db.query(User).filter(User.email==user_credentials.username).first()
     if not user:
         raise HTTPException(
@@ -48,10 +48,10 @@ async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Sess
         )
     access_tocken = oauth2.create_access_tocken(data={"user_id": user.id})
 
-    return {"access_token":access_tocken, "tocken_type": "bearer"}
+    return {"access_token":access_tocken, "token_type": "bearer"}
 
 
-@router.get("/me")
+@router.get("login/me")
 def get_login_user(
     request: Request,
     current_user = Depends(oauth2.get_current_user)):
