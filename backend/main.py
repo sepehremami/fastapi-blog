@@ -11,11 +11,12 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins= settings.origins,
+    allow_origins=settings.origins,
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 app.include_router(routers.router)
 
 
