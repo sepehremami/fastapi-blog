@@ -27,15 +27,16 @@ path_static = f"{BASE_PATH}/static/"
 
 templates = Jinja2Templates(directory=path)
 
-
 @router.get("/login/")
 def login(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
 
 
-@router.post('/login/')
+@router.post('/auth/login/')
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
+    print(user_credentials.username, user_credentials.password)
     user = db.query(User).filter(User.email==user_credentials.username).first()
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -51,14 +52,13 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = 
     return {"access_token":access_tocken, "token_type": "bearer"}
 
 
-@router.get("login/me")
+@router.get("/auth/me")
 def get_login_user(
     request: Request,
     current_user = Depends(oauth2.get_current_user)):
-    return templates.TemplateResponse('profile.html', {"request": request})
+    return {'message':'hello user'}
 
-
-@router.post("/register")
+@router.post("/auth/register")
 def register(
         *,
         db: Session = Depends(get_db),
