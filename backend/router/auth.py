@@ -1,18 +1,14 @@
 from router import *
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+
+
 from utils import verify, hash
 
 router = APIRouter(tags=['Authentication'])
 
-BASE_PATH = Path(__file__).resolve().parent.parent
-print(BASE_PATH)
 router = APIRouter(tags=['Authentication'])
 
-path = f"{BASE_PATH}/templates"
-
-path_static = f"{BASE_PATH}/static/"
-
-templates = Jinja2Templates(directory=path)
+router = APIRouter(tags=['Authentication'])
 
 @router.get("/login/")
 def login(request: Request):
@@ -39,7 +35,7 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = 
     return {"access_token":access_tocken, "token_type": "bearer"}
 
 
-@router.get("/auth/me")
+@router.get("/auth/me/")
 def get_login_user(
     request: Request,
     current_user = Depends(oauth2.get_current_user)):

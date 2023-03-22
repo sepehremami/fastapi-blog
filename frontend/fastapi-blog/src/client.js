@@ -119,9 +119,10 @@ class FastAPIClient {
 function localStorageTokenInterceptor(config) {
   const headers = {};
   const tokenString = localStorage.getItem('token');
-
+  console.log(tokenString)
   if (tokenString) {
     const token = JSON.parse(tokenString);
+    
     const decodedAccessToken = jwtDecode(token.access_token);
     const isAccessTokenValid =
 			moment.unix(decodedAccessToken.exp).toDate() > new Date();

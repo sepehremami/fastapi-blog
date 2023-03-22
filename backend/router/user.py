@@ -1,15 +1,14 @@
+
+
 from router import *
 import utils
+
 
 
 router = APIRouter(
     tags=['Users']
 )
 
-BASE_PATH = Path(__file__).resolve().parent.parent
-
-path = f"{BASE_PATH}/templates"
-templates = Jinja2Templates(directory=path)
 
 @router.get("/users")
 async def get_users(request: Request , db: Session = Depends(get_db)):

@@ -1,4 +1,6 @@
+
 from router import *
+
 
 router = APIRouter(
     prefix="/posts",
