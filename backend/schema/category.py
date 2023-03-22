@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class Category(BaseModel):
+class CategoryBase(BaseModel):
     name:str
     
     class Config:

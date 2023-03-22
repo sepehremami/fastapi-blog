@@ -1,7 +1,5 @@
-from datetime import datetime
 from pydantic import BaseModel
-from database.models import User
-from schema.user import UserBase, UserOut
+from schema import UserOut
 
 
 class PostCreate(BaseModel):
