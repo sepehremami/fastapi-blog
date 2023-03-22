@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from schema.user import UserBase, UserOut
+from schema import UserOut
 
 
 class PostCreate(BaseModel):

@@ -1,14 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-import oauth2
-from database import get_db
-from sqlalchemy.orm import Session
-from database import Comment, User 
-from typing import List
-from schema.comment import CommentBase
+from router import *
 
 
 router = APIRouter(prefix="/comment", tags=["Comment"])
-
 
 @router.get("/", response_model= List[CommentBase])
 def get_user_comments(

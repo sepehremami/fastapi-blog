@@ -1,16 +1,6 @@
-from fastapi import APIRouter, Depends, Request, status, HTTPException, Response
-from sqlalchemy.orm import Session
-from schema.user import UserBase
-from database import User
+from router import *
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from database import get_db
-import oauth2
-from fastapi.templating import Jinja2Templates
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from fastapi.staticfiles import StaticFiles
 from utils import verify, hash
-from pathlib import Path
-import os
 
 router = APIRouter(tags=['Authentication'])
 
