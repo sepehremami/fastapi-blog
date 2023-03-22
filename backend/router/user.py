@@ -1,11 +1,10 @@
-from pathlib import Path
+
 from fastapi import Depends, APIRouter, HTTPException, Request, Response, status
 from typing import List
 from sqlalchemy.orm import Session
 from database.database import get_db
 from database.models import User 
 import utils
-from fastapi.templating import Jinja2Templates
 from schema.user import UserBase, UserCreate
 
 
@@ -13,10 +12,6 @@ router = APIRouter(
     tags=['Users']
 )
 
-BASE_PATH = Path(__file__).resolve().parent.parent
-
-path = f"{BASE_PATH}/templates"
-templates = Jinja2Templates(directory=path)
 
 @router.get("/users")
 async def get_users(request: Request , db: Session = Depends(get_db)):
