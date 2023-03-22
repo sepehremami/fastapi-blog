@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 import oauth2
-from database.database import get_db
+from database import get_db
 from sqlalchemy.orm import Session
-from database.models import Comment, User 
+from database import Comment, User 
 from typing import List
 from schema.comment import CommentBase
 

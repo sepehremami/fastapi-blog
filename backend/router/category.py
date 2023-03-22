@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from database.database import get_db
-from database.models import Category
+from database import get_db
+from database import Category
 from typing import List
 from schema import category
 

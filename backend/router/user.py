@@ -2,8 +2,8 @@ from pathlib import Path
 from fastapi import Depends, APIRouter, HTTPException, Request, Response, status
 from typing import List
 from sqlalchemy.orm import Session
-from database.database import get_db
-from database.models import User 
+from database import get_db
+from database import User 
 import utils
 from fastapi.templating import Jinja2Templates
 from schema.user import UserBase, UserCreate

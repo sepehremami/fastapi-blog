@@ -2,8 +2,8 @@ from fastapi import APIRouter
 from fastapi import Depends, APIRouter, HTTPException, Request, Response, status
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from database.database import get_db
-from database.models import Post, User 
+from database import get_db
+from database import Post, User 
 from fastapi.templating import Jinja2Templates
 from schema.post import PostBase, PostCreate
 import oauth2

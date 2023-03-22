@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request, Form 
-from database.database import Base,engine
-from database.models import Post
+from database import Base, engine
 from router import routers
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware

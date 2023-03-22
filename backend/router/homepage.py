@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.templating import Jinja2Templates
-from database.database import get_db
+from database import get_db
 from sqlalchemy.orm import Session
-from database.models import Post
+from database import Post
 from pathlib import Path
+
 router = APIRouter(
     prefix="/home-page",
     tags=["HomePage"]

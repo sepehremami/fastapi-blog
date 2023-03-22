@@ -1,21 +1,18 @@
 from fastapi import APIRouter, Depends, Request, status, HTTPException, Response
 from sqlalchemy.orm import Session
 from schema.user import UserBase
-from database.models import User
+from database import User
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from database.database import get_db
+from database import get_db
 import oauth2
 from fastapi.templating import Jinja2Templates
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
-from utils import verify
-import os
-# os.system("pwd")
-router = APIRouter(tags=['Authentication'])
-
-
+from utils import verify, hash
 from pathlib import Path
+import os
 
+router = APIRouter(tags=['Authentication'])
 
 BASE_PATH = Path(__file__).resolve().parent.parent
 print(BASE_PATH)
@@ -80,7 +77,7 @@ def register(
         )
 
     
-    hashed_password = utils.hash(password)
+    hashed_password = hash(password)
     new_user = User(
         username=username,
         email=email,
