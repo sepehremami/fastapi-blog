@@ -10,7 +10,7 @@ from schema import user, token
 
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/login",
+    tokenUrl="/auth/login",
     scheme_name="JWT")
 
 
