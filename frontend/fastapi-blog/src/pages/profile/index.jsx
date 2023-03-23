@@ -4,15 +4,20 @@ import { useState, useEffect } from "react";
 import Footer from "../../components/Footer";
 import FastAPIClient from "../../client";
 import config from "../../config";
+import jwtDecode from "jwt-decode";
+import * as moment from "moment";
+
 const client = new FastAPIClient(config);
 
 
-const ProfileView = ({ recipes }) => {
+const ProfileView = ({ blogs }) => {
+    const [posts, setposts] = useState(blogs);
+
+   
 	return (
 		<>
 			<RecipeTable
-				recipes={recipes}
-				
+				blogs={ blogs }
 				showUpdate={true}
 			/>
 			
@@ -21,26 +26,52 @@ const ProfileView = ({ recipes }) => {
 };
 
 const MyProfile = () => {
-    const [recipes, setRecipes] = useState([{
-        "id": 1,
-        "label": "Chicken Vesuvio",
-        "source": "Serious Eats",
-        "url": "http://www.seriouseats.com/recipes/2011/12/chicken-vesuvio-recipe.html",
-    }]);
-
+    const [blogs, setBlogs] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [refreshing, setRefreshing] = useState(true);
-    const fetchUserRecipes = () => {
-		client.getUserRecipes().then((data) => {
-			setRefreshing(false);
-			setRecipes(data?.results);
-		});
-	};
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [error, setError] = useState({ label: "", url: "", source: "" });
+    const [showForm, setShowForm] = useState(false);
+    
+    function handleChange(){
+        console.log('chero')
+    }
+    
+    useEffect(() => {
+        console.log('ppio')
+        return () => {
+            
+        };
+    }, [blogs]);
+    
+
+    useEffect(() => {
+        const tokenString = localStorage.getItem("token");
+		if (tokenString) {
+            const token = JSON.parse(tokenString);
+			const decodedAccessToken = jwtDecode(token.access_token);
+			if (moment.unix(decodedAccessToken.exp).toDate() > new Date()) {
+                setIsLoggedIn(true);
+                fetchUserPosts()
+			}
+            
+		}
+	}, []);
+
+    const fetchUserPosts = () => {client.getUserPosts()
+        .then(  (response) => {
+           
+                setRefreshing(false);
+                setBlogs(response)
+            },
+                (error)=>{})};
+    
+    
     return ( 
         <section
         className=""
         style={{ minHeight: "100vh" }}
-    >
+        >
         <DashboardHeader />
         <div className="container">
                 {/*TODO - move to component*/}
@@ -48,21 +79,15 @@ const MyProfile = () => {
                 Recipes - Better than all the REST
             </h1>
 
-            <button
-                className=""
-                onClick={() => {
-                    setShowForm(!showForm);
-                }}
-            >
-                Create Recipe
-            </button>
+            
 
             <p className="">Latest recipes</p>
-            <div className="">
-                {recipes.length && (
+            <div className="" onChange={handleChange}>
+                {console.log(blogs)}
+                {blogs.length && (
                     <ProfileView
-                        recipes={recipes}
-                        fetchUserRecipes={fetchUserRecipes}
+                    blogs={ blogs }
+                    
                     />
                 )}
             </div>

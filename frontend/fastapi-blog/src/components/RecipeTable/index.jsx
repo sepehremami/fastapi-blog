@@ -1,57 +1,58 @@
-import Recipe from "../Recipe";
+import Post from "../Recipe";
 import React, {useState} from "react";
 import PopupModal from "../Modal/PopupModal";
 import FormInput from "../FormInput/FormInput";
 
-const RecipeTable = ({recipes}) => {
+const RecipeTable = ({blogs}) => {
 
-  const [recipeInfoModal, setRecipeInfoModal] = useState(false)
-	const [state, setstate] = useState(null);
+  	const [postInfoModal, setPostInfoModal] = useState(false)
+
     return (
       <>
         <div className="sections-list">
-			<div>{(recipes.map((recipe) => (console.log(recipe))))}</div>
-          {recipes.length && (
-              recipes.map((recipe) => (
-				  <Recipe showRecipeInfoModal={() => setRecipeInfoModal(recipe)} key={recipe.id} recipe={recipe}  />
-				  
+			<div>{(blogs.map((blog) => (console.log(blog))))}</div>
+          {blogs.length && (
+              blogs.map((blog) => (
+				<Post
+				  	showPostInfoModal={() => setPostInfoModal(blog)}
+					key={blog.id}
+					blog={blog} />
 				  ))
-				
 				)}
 				  
 		  
-          {!recipes.length && (
+          {!blogs.length && (
               <p>No recipes found!</p>
           )}
         </div>
-        {recipeInfoModal && <PopupModal
+        {postInfoModal && <PopupModal
 						modalTitle={"Recipe Info"}
 						onCloseBtnPress={() => {
-							setRecipeInfoModal(false);
+						setPostInfoModal(false);
 						}}
 					>
 						<div className="mt-4 text-left">
 							<form className="mt-5">
-								<FormInput
+								<div 
 									disabled
 									type={"text"}
 									name={"label"}
 									label={"Label"}
-									value={recipeInfoModal?.label}
+									value={postInfoModal?.label}
 								/>
 								<FormInput
 									disabled
 									type={"text"}
 									name={"url"}
 									label={"Url"}
-									value={recipeInfoModal?.url}
+									value={postInfoModal?.url}
 								/>
 								<FormInput
 									disabled
 									type={"text"}
 									name={"source"}
 									label={"Source"}
-									value={recipeInfoModal?.source}
+									value={postInfoModal?.source}
 								/>
 							</form>
 						</div>

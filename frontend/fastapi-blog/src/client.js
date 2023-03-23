@@ -47,7 +47,6 @@ class FastAPIClient {
       const userData = data;
 
       if (userData['is_superuser'] == true) {
-
         this.isSperUser = true;
       }
       localStorage.setItem('user', userData);
@@ -100,7 +99,7 @@ class FastAPIClient {
   }
 
   getUserPosts() {
-    return this.apiClient.get(`/recipes/my-recipes/`).then(({data}) => {
+    return this.apiClient.get('/posts').then(({data}) => {
       return data;
     });
   }
@@ -115,11 +114,10 @@ class FastAPIClient {
     return this.apiClient.post(`/recipes/`, recipeData);
   }
 
-
-  deleteRecipe(recipeId) {
-    return this.apiClient.delete(`/recipes/${recipeId}`);
+  deletePost(PostId) {
+    return this.apiClient.delete(`/posts/${PostId}`);
   }
-}
+};
 
 
 // every request is intercepted and has auth header injected.
@@ -143,9 +141,9 @@ function localStorageTokenInterceptor(config) {
   return config;
 }
 
-const client = new FastAPIClient(config);
+// const client = new FastAPIClient(config);
 
-const data = client.getPost(7).then((response) => {return response})
-    .then((response)=> console.log(response.data));
+// const data = client.deletePost().then((response)=>console.log(response));
+// console.log(data)
 
 export default FastAPIClient;

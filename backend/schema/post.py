@@ -8,7 +8,7 @@ class PostCreate(BaseModel):
     description:str
 
 class PostOut(PostCreate):
-
+    id:int
     category_id:int | None 
     created_at:datetime
     user_id:int
@@ -19,7 +19,7 @@ class PostOut(PostCreate):
 class PostBase(PostCreate):
     id:int
     user:UserOut
-    class Cofing:
+    class Config:
         orm_mode = True
 
 
