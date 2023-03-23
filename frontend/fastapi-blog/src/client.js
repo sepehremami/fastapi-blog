@@ -15,6 +15,7 @@ class FastAPIClient {
 
     this.login = this.login.bind(this);
     this.apiClient = this.getApiClient(this.config);
+    this.isSperUser = false
   }
 
   /* ----- Authentication & User Operations ----- */
@@ -43,7 +44,13 @@ class FastAPIClient {
 
   fetchUser() {
     return this.apiClient.get('/auth/me').then(({data}) => {
-      localStorage.setItem('user', JSON.stringify(data));
+      const userData = data;
+
+      if (userData['is_superuser'] == true) {
+
+        this.isSperUser = true;
+      }
+      localStorage.setItem('user', userData);
       return data;
     });
   }
@@ -82,17 +89,17 @@ class FastAPIClient {
     return client;
   }
 
-  getRecipe(recipeId) {
+  getPost(recipeId) {
     return this.apiClient.get(`/posts/${recipeId}`);
   }
 
-  getRecipes(keyword, limit) {
+  getPosts(keyword, limit) {
     return this.apiClient.get(`/posts?keyword=${keyword}&limit=${limit}`).then(({data}) => {
       return data;
     });
   }
 
-  getUserRecipes() {
+  getUserPosts() {
     return this.apiClient.get(`/recipes/my-recipes/`).then(({data}) => {
       return data;
     });
@@ -119,7 +126,7 @@ class FastAPIClient {
 function localStorageTokenInterceptor(config) {
   const headers = {};
   const tokenString = localStorage.getItem('token');
-  console.log(tokenString)
+
   if (tokenString) {
     const token = JSON.parse(tokenString);
     
@@ -135,5 +142,10 @@ function localStorageTokenInterceptor(config) {
   config['headers'] = headers;
   return config;
 }
+
+const client = new FastAPIClient(config);
+
+const data = client.getPost(7).then((response) => {return response})
+    .then((response)=> console.log(response.data));
 
 export default FastAPIClient;

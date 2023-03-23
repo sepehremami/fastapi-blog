@@ -6,15 +6,20 @@ import FormInput from "../FormInput/FormInput";
 const RecipeTable = ({recipes}) => {
 
   const [recipeInfoModal, setRecipeInfoModal] = useState(false)
-
+	const [state, setstate] = useState(null);
     return (
       <>
         <div className="sections-list">
+			<div>{(recipes.map((recipe) => (console.log(recipe))))}</div>
           {recipes.length && (
               recipes.map((recipe) => (
-                <Recipe showRecipeInfoModal={() => setRecipeInfoModal(recipe)} key={recipe.id} recipe={recipe}  />
-              ))
-          )}
+				  <Recipe showRecipeInfoModal={() => setRecipeInfoModal(recipe)} key={recipe.id} recipe={recipe}  />
+				  
+				  ))
+				
+				)}
+				  
+		  
           {!recipes.length && (
               <p>No recipes found!</p>
           )}

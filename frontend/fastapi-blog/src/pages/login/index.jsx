@@ -34,7 +34,7 @@ const Login = () => {
 
     client.login(loginForm.email, loginForm.password)
       .then( () => {
-        navigate('/my-recipes')
+        navigate('/auth/me')
       })
       .catch( (err) => {
         setLoading(false)
