@@ -1,4 +1,5 @@
 
+from schema.post import PostOut
 from router import *
 
 
@@ -7,7 +8,7 @@ router = APIRouter(
     tags=["Post"]
 )
 
-@router.get("/")
+@router.get("/", response_model=List[PostOut], status_code=status.HTTP_200_OK)
 def get_user_posts(
         db: Session = Depends(get_db), 
         current_user: User = Depends(oauth2.get_current_user),
@@ -23,7 +24,7 @@ def get_user_posts(
     return posts
 
 
-@router.get("/{id}", status_code=200)
+@router.get("/{id}", response_model=PostOut, status_code=200)
 def get_post(
         id:int,
         db: Session = Depends(get_db),
@@ -40,7 +41,8 @@ def get_post(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Operation not permitted"
         )
-    return {'message': post}
+    
+    return post
 
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
