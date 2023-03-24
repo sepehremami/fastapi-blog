@@ -10,13 +10,11 @@ class UserBase(BaseModel):
     class Config:
         orm_mode = True
 
-class UserOut(BaseModel):
+class UserOut(UserBase):
     id:int
-    username: str
-    email: str
-    created_at: datetime
-    class Config:
-        orm_mode=True
+    created_at:datetime
+    is_superuser:bool
+
 
         
 class UserCreate(UserBase):
