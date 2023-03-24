@@ -11,8 +11,9 @@ class Setting(BaseSettings):
     algorithm:str= "HS256"
     access_tocken_expire_minutes:str = "30"
     origins = [
+    "http://localhost:3000/login",
     "http://localhost:8000",
-    "https://localhost:3000/login",
+    "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3000/login"]
     class Config:
