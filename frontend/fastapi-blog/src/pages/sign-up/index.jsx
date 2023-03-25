@@ -46,28 +46,28 @@ const SignUp = () => {
     console.log(JSON.stringify(registerForm));
 
 
-  //   client.register(registerForm.email, registerForm.password, registerForm.username, registerForm.phone)
-  //     .then( () => {
-  //       navigate('/login')
-  //     })
-  //     .catch( (err) => {
-  //       setLoading(false);
-  //       setError(true);
-  //       alert(err)
-  //     });
-  // }
-
-    fetch("http://localhost:8001/auth/register", {
-      method: "POST",
-      headers:{"Content-Type": "application/json"},
-      body: JSON.stringify(registerForm)
-    }).then(() => {
-      console.log("signed up");
-    })
-
-    // history.go(-1)
-    navigate('/login')
+    client.register(registerForm.email, registerForm.password, registerForm.username, registerForm.phone)
+      .then( () => {
+        navigate('/login')
+      })
+      .catch( (err) => {
+        setLoading(false);
+        setError(true);
+        alert(err)
+      });
   }
+
+  //   fetch("http://localhost:8001/auth/register", {
+  //     method: "POST",
+  //     headers:{"Content-Type": "application/json"},
+  //     body: JSON.stringify(registerForm)
+  //   }).then(() => {
+  //     console.log("signed up");
+  //   })
+  //
+  //   // history.go(-1)
+  //   navigate('/login')
+  // }
 
   return (
       <>
