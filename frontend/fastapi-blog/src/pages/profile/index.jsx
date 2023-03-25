@@ -16,6 +16,7 @@ const ProfileView = ({ blogs }) => {
    
 	return (
 		<>
+        
 			<RecipeTable
 				blogs={ blogs }
 				showUpdate={true}
@@ -33,11 +34,11 @@ const MyProfile = () => {
     const [showForm, setShowForm] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     function handleChange(){
-        console.log('chero')
+        console.log('')
     }
     
     useEffect(() => {
-        console.log('ppio')
+        
         return () => {
             
         };
@@ -61,7 +62,7 @@ const MyProfile = () => {
         setLoading(true);
         client.getUserPosts()
         .then(  (response) => {
-            console.log(response)
+            
                 setRefreshing(false);
                 setBlogs(response)
                 setLoading(false)
@@ -69,12 +70,16 @@ const MyProfile = () => {
                 (error)=>{setError(error)})};
     
     return ( 
+        <div>
+            <DashboardHeader/>
         <section
         className=""
         style={{ minHeight: "100vh" }}
         >
+
         
         <div className="container">
+           
                 {/*TODO - move to component*/}
             <h1>
                 Recipes - Better than all the REST
@@ -82,7 +87,7 @@ const MyProfile = () => {
             {loading && (<div><p>Loading...</p></div>)}
             {blogs && (
             <div className="">
-                {console.log(blogs)}
+                
                 {blogs.length && (
                     <ProfileView
                     blogs={ blogs }
@@ -92,9 +97,10 @@ const MyProfile = () => {
 
             
         </div>
-
+    
         <Footer />
     </section>
+    </div>
      );
 }
  

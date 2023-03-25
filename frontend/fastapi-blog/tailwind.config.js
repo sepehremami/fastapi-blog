@@ -9,7 +9,24 @@ module.exports = {
   "src/**/*.{js,jsx,ts,tsx}",
   "src/pages/login/index.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    container: {
+      center: true,
+      padding: {
+        default: '1rem',
+        sm: '2rem',
+        lg: '4rem',
+        xl: '5rem',
+      },
+    },
+    borderRadius: {
+      'none': '0',
+      'sm': '.125rem',
+      default: '.25rem',
+      'lg': '.5rem',
+      'full': '9999px',
+    },
   },
   plugins: [],
 }
+
+

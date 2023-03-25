@@ -8,7 +8,7 @@ const client = new FastAPIClient(config)
 const ProfileView = () => {
     
     const user = client.fetchUser();
-    console.log(user)
+    
 
     return ( 
    

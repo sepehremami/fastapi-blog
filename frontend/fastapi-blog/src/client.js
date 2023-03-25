@@ -92,17 +92,24 @@ class FastAPIClient {
     return this.apiClient.get(`/posts/${recipeId}`);
   }
 
-  getPosts(keyword, limit) {
-    return this.apiClient.get(`/posts?keyword=${keyword}&limit=${limit}`).then(({data}) => {
+  getPosts(keyword, limit, skip) {
+    return this.apiClient.get(`/posts/search/?skip=${skip}&limit=${limit}&search=${keyword}`).then(({data}) => {
       return data;
     });
   }
 
-  getLatestPosts(limit) {
+  getLatestPosts(limit=10) {
     return this.apiClient.get(`/posts/latest/?num_posts=${limit}`).then(({data}) => {
       return data;
     });
   }
+
+  getRandomPosts(limit) {
+    return this.apiClient.get(`/posts/random/?num_posts=${limit}`).then(({data}) => {
+      return data;
+    });
+  }
+
 
   getUserPosts() {
     return this.apiClient.get('/posts').then(({data}) => {
@@ -110,14 +117,12 @@ class FastAPIClient {
     });
   }
 
-  createRecipe(label, url, source, submitter_id) {
+  createPost(title, description) {
     const recipeData = {
-      label,
-      url,
-      source,
-      submitter_id: submitter_id,
+      title,
+      description
     };
-    return this.apiClient.post(`/recipes/`, recipeData);
+    return this.apiClient.post(`/posts/`, recipeData);
   }
 
   deletePost(PostId) {
@@ -147,9 +152,5 @@ function localStorageTokenInterceptor(config) {
   return config;
 }
 
-// const client = new FastAPIClient(config);
-
-// const data = client.deletePost().then((response)=>console.log(response));
-// console.log(data)
 
 export default FastAPIClient;

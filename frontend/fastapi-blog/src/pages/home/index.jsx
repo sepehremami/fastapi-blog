@@ -10,38 +10,42 @@ const client = new FastAPIClient(config);
 
 
 const Home = () => {
-
+     const [latest, setlatest] = useState([]);
      const [loading, setLoading] = useState(true)
-     const [blogs, setblogs] = useState([]);
+     const [blogs, setBlogs] = useState([]);
      const [searchValue, setSearchValue] = useState(10)
-
+     
+     
      useEffect(() => {
-          // FETCH THE RECIPIES
-          fetchRecipes()
-     }, [])
+          fetchRecipes(true);
+          fetchLatestPosts(true);
+     }, []);
+    
 
-
+     const fetchLatestPosts = (search) => {
+          client.getLatestPosts().then((data) =>{
+          
+               setlatest(data)
+          })
+     }
+     
      const fetchRecipes = (search) =>  {
 
           if (searchValue?.length <= 0 && search)
-               return alert("Please Enter Search Text")
+          return alert("Please Enter Search Text")
 
-          // SET THE LOADER TO TURE
           setLoading(true)
 
-          // GET THE RECIPIES FROM THE API
-          client.getRandomPosts(searchValue).then((data) => {
-               console.log(data)
+          client.getPosts(searchValue, 10,0).then((data) => {
                setLoading(false)
-
-               // SET THE RECIPIES DATA
-               setblogs(data?.results)
+               setBlogs(data)
           });
      }
 
-
+     
+     
      if (loading)
-          return <Loader />
+     return <Loader />
 
      return (
           <>
@@ -52,7 +56,7 @@ const Home = () => {
 
                          <div className="flex flex-col flex-wrap pb-6 mb-12 text-white ">
                               <h1 className="mb-6 text-3xl font-medium text-white">
-                                   Recipes - Better than all the REST
+                                  Are You Looking for something Special
                               </h1>
                               {/* <!-- This is an example component --> */}
                               <div className="container flex justify-center items-center mb-6">
@@ -65,12 +69,19 @@ const Home = () => {
                                              <button onClick={() => fetchRecipes(true)} className="h-10 w-20 text-white rounded bg-teal-500 hover:bg-teal-600">Search</button>
                                         </div>
                                    </div>
+                                   
                               </div>
                               {/* <p className="text-base leading-relaxed">
               Sample recipes...</p> */}
-                              <div className="mainViewport">
+                              <div className="  mainViewport">
                                    <RecipeTable
-                                        recipes={recipes}
+                                        blogs={blogs|| []}
+                                   />
+                              </div>
+                              <div className="inline">
+                                   <h1 class="font-bold text-center mr-10 ">Here are the Latest Posts!</h1>
+                                   <RecipeTable
+                                        blogs={latest}
                                    />
                               </div>
                          </div>

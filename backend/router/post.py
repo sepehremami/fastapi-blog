@@ -21,6 +21,20 @@ def get_random_posts(num_posts: int = Query(default=10, leq=10), db: Session = D
     return latest_posts
 
 
+@router.get("/search", response_model=List[PostOut], status_code=status.HTTP_200_OK)
+def search_all_posts(
+        db: Session = Depends(get_db), 
+        skip: int = 0,
+        limit:int=10,
+        search: Optional[str]=""):
+    print(search.lower())
+    posts: List[Post] = db.query(Post).\
+        filter(Post.title.ilike(f"%{search}%"), Post.description.ilike(f'%{search}%')).\
+        limit(limit).offset(skip).all()
+    
+    return posts
+
+
 @router.get("/", response_model=List[PostOut], status_code=status.HTTP_200_OK)
 def get_user_posts(
         db: Session = Depends(get_db), 

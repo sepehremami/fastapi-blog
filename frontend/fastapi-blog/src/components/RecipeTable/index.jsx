@@ -9,8 +9,8 @@ const RecipeTable = ({blogs}) => {
 
     return (
       <>
-        <div className="sections-list">
-			<div>{(blogs.map((blog) => (console.log(blog))))}</div>
+        <div className="grid sections-list">
+			<div>{(blogs.map((blog)=> {}))}</div>
           {blogs.length && (
               blogs.map((blog) => (
 				<Post

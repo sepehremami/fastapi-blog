@@ -3,52 +3,81 @@ import FastAPIClient from "../../client";
 import config from "../../config";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+import * as moment from "moment";
 const client = new FastAPIClient(config);
 
-const Post = ({ blog,  showPostInfoModal }) => {
-	const [post, setPost] = useState(blog);
-	const [loading, setLoading] = useState(false);
-	
+const Post = ({ blog, showPostInfoModal }) => {
+  const [post, setPost] = useState(blog);
+  const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	const handleDelete = (id) => {
-		client.deletePost(id)
-		setPost(null)
-      } 
+  useEffect(() => {
+    const tokenString = localStorage.getItem("token");
+    if (tokenString) {
+      const token = JSON.parse(tokenString);
+      const decodedAccessToken = jwtDecode(token.access_token);
+      if (moment.unix(decodedAccessToken.exp).toDate() > new Date()) {
+        setIsLoggedIn(true);
+      }
+    }
+  }, []);
 
+  const handleDelete = (event, id) => {
+    client.deletePost(id);
+    setPost(null);
+  };
 
-	return (
-		post && (
+  let deleteButton;
+  const buttonStyle =
+    "bg-red-500 text-sm px-4 py-2 leading-none rounded text-white  hover:bg-red-700 hover:text-bg-black";
 
-			<>
-			<Link to={`/posts/${post.id}`} >
-				<div
-					
-					// onClick={(e) => {showPostInfoModal() ; e.stopPropagation()}} 
-					className="flex flex-wrap items-end justify-between w-full transition duration-500 ease-in-out transform bg-black border-2 border-gray-600 rounded-lg hover:border-white mb-3"
-				>
-					
-					<div className="w-full xl:w-1/4 md:w-1/4">
-						<div className="relative flex flex-col h-full p-8 ">
-							<h2 className="mb-4 font-semibold tracking-widest text-white uppercase title-font">
-								{post?.title}
-							</h2>
-							<h2 className="mb-4 font-semibold tracking-widest text-white uppercase title-font">
-								{post?.id}
-							</h2>
-							<div className="flex flex-col md:flex-row">
-								<button
-								onClick={() => handleDelete(post.id)}
-								className="delete bg-red-300">
-								delete post
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</Link>
-			</>
-		)
-	);
+  if (isLoggedIn) {
+    deleteButton = (
+      <button
+        className={buttonStyle}
+        onClick={(e) => {
+          handleDelete(e, post.id);
+        }}
+      >
+        Delete
+      </button>
+    );
+  }
+
+  return (
+    post && (
+      <>
+        <div
+          // onClick={(e) => {showPostInfoModal() ; e.stopPropagation()}}
+          className="flex flex-wrap items-end w-full transition duration-500 ease-in-out transform bg-black border-2 border-gray-600 rounded-lg hover:border-white mb-3"
+        >
+          <div className="w-full xl:w-1/4 md:w-1/4">
+            <div className="relative flex flex-col h-full p-8 ">
+              <h2 className="mb-4 font-semibold tracking-widest text-white uppercase title-font">
+                {post?.title}
+              </h2>
+              <h2 className="mb-4 font-semibold tracking-widest text-white uppercase title-font">
+                {post?.id}
+              </h2>
+            </div>
+          </div>
+
+          <div className="m-10">
+            <Link
+			className="bg-[#14B8A6] rounded-default" 
+              to={`/posts/${post.id}`}
+            >
+              View Post
+            </Link>
+          </div>
+          <div
+		  className="m-10"
+		  >{deleteButton}</div>
+        </div>
+      </>
+    )
+  );
 };
 
 export default Post;
