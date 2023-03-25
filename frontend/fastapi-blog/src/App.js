@@ -7,17 +7,19 @@ import Home from './pages/home';
 import ErrorPage from './pages/error-page';
 import Navbar from './components/Navbar/Navbar';
 import MyProfile from './pages/profile';
-
+import ProfileView
+ from './pages/profileView';
+import DashboardHeader from './components/DashboardHeader';
 const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
-      <Navbar />     
         <Routes>
           <Route path="/" element={<Home />} />
           <Route exact path="/auth/me" element={<MyProfile />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/sign-up" element={<SignUp />} />
+          <Route exact path="/profile" element={<ProfileView />} />
           <Route exact={true} path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

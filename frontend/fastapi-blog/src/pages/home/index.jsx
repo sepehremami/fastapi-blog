@@ -12,8 +12,8 @@ const client = new FastAPIClient(config);
 const Home = () => {
 
      const [loading, setLoading] = useState(true)
-     const [recipes, setRecipes] = useState([])
-     const [searchValue, setSearchValue] = useState("chicken")
+     const [blogs, setblogs] = useState([]);
+     const [searchValue, setSearchValue] = useState(10)
 
      useEffect(() => {
           // FETCH THE RECIPIES
@@ -21,7 +21,7 @@ const Home = () => {
      }, [])
 
 
-     const fetchRecipes = (search) => {
+     const fetchRecipes = (search) =>  {
 
           if (searchValue?.length <= 0 && search)
                return alert("Please Enter Search Text")
@@ -30,11 +30,12 @@ const Home = () => {
           setLoading(true)
 
           // GET THE RECIPIES FROM THE API
-          client.getRecipes(searchValue).then((data) => {
+          client.getRandomPosts(searchValue).then((data) => {
+               console.log(data)
                setLoading(false)
 
                // SET THE RECIPIES DATA
-               setRecipes(data?.results)
+               setblogs(data?.results)
           });
      }
 
