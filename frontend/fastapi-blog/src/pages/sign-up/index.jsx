@@ -9,8 +9,9 @@ import FormInput from '../../components/FormInput/FormInput';
 const client = new FastAPIClient(config);
 
 const SignUp = () => {
-  const [error, setError] = useState({ email: '', password: '', fullName: '' });
-  const [registerForm, setRegisterForm] = useState({ email: '', password: '', fullName: '' });
+  const [error, setError] = useState({username: '', email: '', password: '',  phone: "" });
+
+  const [registerForm, setRegisterForm] = useState({username: '', email: '', password: '',  phone: "" });
 
   const [loading, setLoading] = useState(false)
 
@@ -21,10 +22,10 @@ const SignUp = () => {
     setLoading(true)
     setError(false);
 
-    if(registerForm.fullName.length <= 0)
+    if(registerForm.username.length <= 0)
     {
       setLoading(false)
-      return setError({fullName: "Please Enter Your Full Name"}) 
+      return setError({username: "Please Enter Your Full Name"})
     }
     if(registerForm.email.length <= 0)
     {
@@ -36,16 +37,36 @@ const SignUp = () => {
       setLoading(false)
       return setError({password: "Please Enter Password"})
     }
+    if(registerForm.phone.length <= 0)
+    {
+      setLoading(false)
+      return setError({phone: "Please Enter Your Full Name"})
+    }
 
-    client.register(registerForm.email, registerForm.password, registerForm.fullName)
-      .then( () => {
-        navigate('/login')
-      })
-      .catch( (err) => {
-        setLoading(false)
-        setError(true);
-        alert(err)
-      });
+    console.log(JSON.stringify(registerForm));
+
+
+  //   client.register(registerForm.email, registerForm.password, registerForm.username, registerForm.phone)
+  //     .then( () => {
+  //       navigate('/login')
+  //     })
+  //     .catch( (err) => {
+  //       setLoading(false);
+  //       setError(true);
+  //       alert(err)
+  //     });
+  // }
+
+    fetch("http://localhost:8001/auth/register", {
+      method: "POST",
+      headers:{"Content-Type": "application/json"},
+      body: JSON.stringify(registerForm)
+    }).then(() => {
+      console.log("signed up");
+    })
+
+    // history.go(-1)
+    navigate('/login')
   }
 
   return (
@@ -65,11 +86,11 @@ const SignUp = () => {
               <form onSubmit={(e) => onRegister(e)}>
                   <FormInput 
                     type={"text"} 
-                    name={"fullName"} 
+                    name={"fullName"}
                     label={"Full Name"}
-                    error={error.fullName} 
-                    value={registerForm.fullName} 
-                    onChange={(e) => setRegisterForm({...registerForm, fullName: e.target.value })} 
+                    error={error.username}
+                    value={registerForm.username}
+                    onChange={(e) => setRegisterForm({...registerForm, username: e.target.value })}
                   />
                   <FormInput 
                     type={"email"} 
@@ -79,6 +100,7 @@ const SignUp = () => {
                     value={registerForm.email} 
                     onChange={(e) => setRegisterForm({...registerForm, email: e.target.value })} 
                   />
+
                   <FormInput 
                     type={"password"} 
                     name={"password"} 
@@ -86,6 +108,14 @@ const SignUp = () => {
                     error={error.password}
                     value={registerForm.password} 
                     onChange={(e) => setRegisterForm({...registerForm, password: e.target.value })} 
+                  />
+                  <FormInput
+                      type={"text"}
+                      name={"phone"}
+                      label={"phone"}
+                      error={error.phone}
+                      value={registerForm.phone}
+                      onChange={(e) => setRegisterForm({...registerForm, phone: e.target.value })}
                   />
                 <Button title={"Create Account"} error={error.password} loading={loading} />       
               </form>
