@@ -101,8 +101,17 @@ function DashboardHeader() {
                     Create Account
                 </Link>}
 
+                {isLoggedIn && <Link
+                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
+                    to={`/profile`}>
+                    View Profile
+                </Link>}
+
+
                 {isSuperUser() && <Link to={'posts'}
-                className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4'>All Posts</Link>}
+                    className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4'>
+                    All Posts
+                </Link>}
 
             </div>
             <div>

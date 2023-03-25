@@ -47,7 +47,7 @@ const Login = () => {
   return (
       <>
       <section className="">
-        <DashboardHeader />
+        
         <div className="border-b border-black">
             <div className="border-r bg-white">
               <header>

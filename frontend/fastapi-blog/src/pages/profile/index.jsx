@@ -28,11 +28,10 @@ const ProfileView = ({ blogs }) => {
 const MyProfile = () => {
     const [blogs, setBlogs] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [refreshing, setRefreshing] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [error, setError] = useState({ label: "", url: "", source: "" });
     const [showForm, setShowForm] = useState(false);
-    
+    const [refreshing, setRefreshing] = useState(false);
     function handleChange(){
         console.log('chero')
     }
@@ -52,45 +51,46 @@ const MyProfile = () => {
 			const decodedAccessToken = jwtDecode(token.access_token);
 			if (moment.unix(decodedAccessToken.exp).toDate() > new Date()) {
                 setIsLoggedIn(true);
-                fetchUserPosts()
+                fetchUserPosts();
 			}
             
 		}
 	}, []);
 
-    const fetchUserPosts = () => {client.getUserPosts()
+    const fetchUserPosts = () => {
+        setLoading(true);
+        client.getUserPosts()
         .then(  (response) => {
-           
+            console.log(response)
                 setRefreshing(false);
                 setBlogs(response)
+                setLoading(false)
             },
-                (error)=>{})};
-    
+                (error)=>{setError(error)})};
     
     return ( 
         <section
         className=""
         style={{ minHeight: "100vh" }}
         >
-        <DashboardHeader />
+        
         <div className="container">
                 {/*TODO - move to component*/}
             <h1>
                 Recipes - Better than all the REST
             </h1>
-
-            
-
-            <p className="">Latest recipes</p>
-            <div className="" onChange={handleChange}>
+            {loading && (<div><p>Loading...</p></div>)}
+            {blogs && (
+            <div className="">
                 {console.log(blogs)}
                 {blogs.length && (
                     <ProfileView
                     blogs={ blogs }
                     
-                    />
-                )}
-            </div>
+                    />)}
+            </div>)}
+
+            
         </div>
 
         <Footer />

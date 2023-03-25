@@ -98,6 +98,12 @@ class FastAPIClient {
     });
   }
 
+  getLatestPosts(limit) {
+    return this.apiClient.get(`/posts/latest/?num_posts=${limit}`).then(({data}) => {
+      return data;
+    });
+  }
+
   getUserPosts() {
     return this.apiClient.get('/posts').then(({data}) => {
       return data;
