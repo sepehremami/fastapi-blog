@@ -54,15 +54,16 @@ class FastAPIClient {
     });
   }
 
-  register(email, password, fullName) {
+  register(username, email, password, phone) {
     const registerData = {
-      email,
-      password,
-      full_name: fullName,
+      username: username,
+      email: email,
+      password: password,
+      phone: phone,
       is_active: true,
     };
 
-    return this.apiClient.post('/auth/signup', registerData).then(
+    return this.apiClient.post('/auth/register', registerData).then(
         (resp) => {
           return resp.data;
         });

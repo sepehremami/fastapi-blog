@@ -21,3 +21,4 @@ register[] -->> auth
 3. join us--->login profile ---> join us change to profile name ---->his blogs, new blog ---> enter to submit blog page(category , subject, textarea , submit button ) , logout - post , posts -->> yekshanbe shab
 4. Jinja -->> final step  -->> shanbeh(shab)
 
+..
