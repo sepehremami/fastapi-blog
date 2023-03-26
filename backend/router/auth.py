@@ -2,13 +2,15 @@ from schema.user import UserOut
 from router import *
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from utils import verify, hash
+from schema.user import UserModel
+from pydantic import BaseModel
 
 router = APIRouter(tags=['Authentication'])
 
 @router.post('/auth/login/')
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
     # print(user_credentials.username, user_credentials.password)
-    user = db.query(User).filter(User.email==user_credentials.username).first()
+    user = db.query(User).filter(User.email == user_credentials.username).first()
 
     if not user:
         raise HTTPException(
@@ -25,32 +27,26 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = 
     return {"access_token":access_tocken, "token_type": "bearer"}
 
 
+
+
 @router.post("/auth/register")
-def register(
-        *,
-        db: Session = Depends(get_db),
-        username: str,
-        email: str,
-        password: str,
-        phone: str = None,
-        image: str = None):
- 
-    if db.query(User).filter(User.username == username).first():
+def register(user: UserModel, db: Session = Depends(get_db)):
+
+    if db.query(User).filter(User.username == user.username).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Username already taken"
         )
-    if db.query(User).filter(User.email == email).first():
+    if db.query(User).filter(User.email == user.email).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered"
         )
-    hashed_password = hash(password)
+    hashed_password = hash(user.password)
     new_user = User(
-        username=username,
-        email=email,
-        phone=phone,
-        image=image,
+        username=user.username,
+        email=user.email,
+        phone=user.phone,
         password=hashed_password
     )
     db.add(new_user)
