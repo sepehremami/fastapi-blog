@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     email:EmailStr
     phone:str
     
+    
     class Config:
         orm_mode = True
 

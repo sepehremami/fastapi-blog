@@ -1,9 +1,11 @@
 
-
+from fastapi.responses import StreamingResponse
+from io import BytesIO
+from fastapi import UploadFile, File
+from database.models import Image
 from router import *
 import utils
-
-
+from PIL import Image as ImagePillow
 
 router = APIRouter(
     tags=['Users']
@@ -73,3 +75,63 @@ def update_hero(id: int, updated_user: UserBase,db: Session=Depends(get_db)):
     db.commit()
     db.refresh(user)
     return user
+
+@router.post("/user/image/{user_id}")
+async def upload_image(user_id: int ,db :Session = Depends(get_db), file: UploadFile = File(...)):
+    # Create a SQLAlchemy db
+    file_content = await file.read()
+    # Update the corresponding user object with the binary data
+    image = Image(image=file_content, user_id=user_id)
+    image.user_id = user_id
+    db.add(image)
+    db.commit()
+    db.close()
+    # Return the updated user profile
+    return image
+
+@router.get('/user/image')
+async def get_images(db: Session = Depends(get_db)):
+    images = db.query(Image).all()
+
+    return images
+
+
+@router.get("/images/")
+def get_image(db:Session= Depends(get_db)):
+    # Get the row containing the image data
+    image_row = db.query(Image).first()
+    print(image_row)
+    if image_row is not None:
+        # Access the LargeBinary column containing the image data
+        image_data = image_row.image
+        print(type(image_data))
+        # Convert the LargeBinary data to a Pillow Image
+        image = ImagePillow.open(BytesIO(image_data))
+        
+        # Save the image to a BytesIO object
+        buffer = BytesIO()
+      
+        image.save(buffer, format="JPEG")
+
+        # Return the image in the response
+        return StreamingResponse(buffer, media_type="image/jpeg")
+    else:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+@router.get('/image/view')
+async def view_image(response: Response, db:Session=Depends(get_db)):
+    # Query image data from database
+    
+    image = db.query(Image).first()
+    db.close()
+
+    # Convert binary data to PIL Image
+    img = ImagePillow.open(BytesIO(image.image))
+
+    # Create BytesIO buffer to hold JPEG data
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG')
+
+    # Return JPEG data as StreamingResponse
+    
+    return StreamingResponse(iter([buffer.getvalue()]), media_type='image/jpeg',)

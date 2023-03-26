@@ -1,5 +1,5 @@
 
-from sqlalchemy import Boolean, create_engine, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Boolean, LargeBinary, create_engine, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
@@ -73,7 +73,7 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     phone = Column(String)
-    image = Column(String)
+   
     password = Column(String)
     is_superuser = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow())
@@ -82,3 +82,10 @@ class User(Base):
     posts = relationship("Post", back_populates="users")
     comments = relationship("Comment", back_populates="users")
 
+
+class Image(Base):
+    __tablename__ = "images"
+    id = Column(Integer, primary_key=True)
+    image = Column(LargeBinary, nullable=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))

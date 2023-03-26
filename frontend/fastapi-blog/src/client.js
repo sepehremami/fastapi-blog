@@ -129,6 +129,11 @@ class FastAPIClient {
   deletePost(PostId) {
     return this.apiClient.delete(`/posts/${PostId}`);
   }
+
+
+  getImage() {
+    return this.apiClient.get('/image/view');
+  }
 };
 
 
