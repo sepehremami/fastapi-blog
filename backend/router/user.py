@@ -1,8 +1,6 @@
-
-
 from router import *
 import utils
-
+from crud import *
 
 
 router = APIRouter(
@@ -11,59 +9,55 @@ router = APIRouter(
 
 
 @router.get("/users")
-async def get_users(request: Request , db: Session = Depends(get_db)):
-    users: List[UserBase] = db.query(User).all()
-    return users
+def get_users(request: Request , db: Session = Depends(get_db)):
+     return users.get_multi(db)
 
 
-@router.get("/mypost")
-async def get_users(request: Request , db: Session = Depends(get_db)):
-    users: List[UserBase] = db.query(User).all()
-
-    return templates.TemplateResponse("myPosts.html", {"request": request, "users": users})
-
-
-@router.get("/users/{id}")
-def get_user(id : int, response : Response, db : Session = Depends(get_db)) -> dict:
-    user = db.query(User).filter(User.id == id).first()
-    return user
+@router.get("/users/{id}") 
+def get_user(id : int, db : Session = Depends(get_db)):
+    result = users.get(db, id)
+    if result == status.HTTP_404_NOT_FOUND:
+        raise HTTPException(
+            status_code = result,
+            detail=f"user with id {id} does not exit"
+        )
+    return {'message': result}
 
 
 @router.post("/users", status_code= status.HTTP_201_CREATED)
-async def create_user(new_user: UserCreate, db: Session = Depends(get_db)):
+def create_user(new_user: UserCreate, db: Session = Depends(get_db)):
+
     hashed_password = utils.hash(new_user.password)
     new_user.password = hashed_password
-    user = User(**new_user.dict())
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+    return users.create(new_user, db)
+
+
 
 @router.delete("/users/{id}")
 def delete_user(id: int, db: Session=Depends(get_db)):
-    user = db.query(User).filter(User.id == id)
-    if not user.first():
+    result = users.remove(db, id)
+    if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="user with id {id} does not exit"
+            status_code = result,
+            detail=f"user with id {id} does not exit"
         )
-    user.delete(synchronize_session=False)
-    db.commit()
+
     return {"data":"user deleted"}
 
 @router.put("/users/{id}")
 def update_user(id:int, updated_user:UserBase, db: Session=Depends(get_db)):
-    user = db.query(User).filter(User.id == id)
-    if not user.first():
+    result = users.update(id, db, updated_user)
+    if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="user with id {id} does not exit")
-    user.update(updated_user.dict(), synchronize_session=False)
+            status_code = result,
+            detail=f"user with id {id} does not exit")
+    
+    return {'msg':'user updated'}
 
 
 @router.patch("/users/{id}")
 def update_hero(id: int, updated_user: UserBase,db: Session=Depends(get_db)):
-    user = db.query(User).filter(User.id == id).first()
+    user = db.query(Users).filter(Users.id == id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     user_data = updated_user.dict(exclude_unset=True)

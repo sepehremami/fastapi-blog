@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
-from database import User, get_db
+from database import Users, get_db
 from fastapi import status
 from schema import UserBase
 
@@ -18,7 +18,7 @@ def verify(plain_password, hashed_password):
 
 
 def get_user(username:str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username==username)
+    user = db.query(Users).filter(Users.username==username)
     if not user: 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return UserBase(**user.dict())

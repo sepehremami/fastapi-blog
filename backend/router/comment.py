@@ -1,4 +1,5 @@
 from router import *
+from crud import *
 
 
 router = APIRouter(prefix="/comment", tags=["Comment"])
@@ -6,61 +7,48 @@ router = APIRouter(prefix="/comment", tags=["Comment"])
 @router.get("/", response_model= List[CommentBase])
 def get_user_comments(
         db :Session = Depends(get_db),
-        current_user : User =  Depends(oauth2.get_current_user),
+        current_user : Users =  Depends(oauth2.get_current_user),
         skip: int = 0,
         limit: int = 10
         ):
-    comment = db.query(Comment).filter(Comment.user_id==current_user.id).limit(limit).offset(skip).all()
-    return comment
+    return comment.get_multi(db, skip, limit)
+    
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK)
 def get_comment(
         id : int,
         db: Session = Depends(get_db),
-        current_user: User = Depends(oauth2.get_current_user)):
-    comment = db.query(Comment).filter(Comment.user_id==id).first()
-    if not comment:
+        current_user: Users = Depends(oauth2.get_current_user)):
+    
+    result = comment.get(db, id)
+    
+    if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code = result,
             detail=f"comment with id {id} does not exit"
         )
-    if comment.user_id != current_user.id:
-         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Operation not permitted"
-        )
-    return {'message': comment}
+    return {'message': result}
 
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
 def create_comment(new_comment : CommentBase, 
                    db :Session = Depends(get_db),
-                   current_user : User = Depends(oauth2.get_current_user)):
-    comment_information = new_comment.dict()
-    comment_information.update({"user_id":current_user.id})
-    comment = Comment(**comment_information)
-    db.add(comment)
-    db.commit()
-    db.refresh(comment)
-    return comment
+                   current_user : Users = Depends(oauth2.get_current_user)):
+    
+    return comment.create(new_comment, db)
 
 
 @router.delete("/{id}")
 def delete_comment(id: int, db: Session = Depends(get_db),
-                   current_user : User = Depends(oauth2.get_current_user)):
-    comment = db.query(Comment).filter(Comment.id == id)
-    if not comment.first():
+                   current_user : Users = Depends(oauth2.get_current_user)):
+
+    result = comment.remove(db, id)
+    if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="comment with id {post_id} does not exit"
+            status_code = result,
+            detail=f"comment with id {id} does not exit"
         )
-    if comment.first().user_id != current_user.id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Operation not permitted"
-        )
-    comment.delete(synchronize_session=False)
-    db.commit()
+
     return {"data":"comment deleted",
-            "deleted comment": comment.first()}
+            "deleted comment": id}

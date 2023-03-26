@@ -41,7 +41,7 @@ def get_current_user(access_token = Depends(oauth2_scheme), db:Session = Depends
         
     except JWTError:
         raise credentials_exception
-    current_user = db.query(models.User).filter(models.User.id == user_id).first()
+    current_user = db.query(models.Users).filter(models.Users.id == user_id).first()
     if current_user is None:
         raise credentials_exception
     return current_user

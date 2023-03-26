@@ -10,15 +10,11 @@ router = APIRouter(tags=['Authentication'])
 
 router = APIRouter(tags=['Authentication'])
 
-@router.get("/login/")
-def login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
-
 
 @router.post('/auth/login/')
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
     print(user_credentials.username, user_credentials.password)
-    user = db.query(User).filter(User.email==user_credentials.username).first()
+    user = db.query(Users).filter(Users.email==user_credentials.username).first()
 
     if not user:
         raise HTTPException(
@@ -51,12 +47,12 @@ def register(
         phone: str = None,
         image: str = None):
     
-    if db.query(User).filter(User.username == username).first():
+    if db.query(Users).filter(Users.username == username).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Username already taken"
         )
-    if db.query(User).filter(User.email == email).first():
+    if db.query(Users).filter(Users.email == email).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered"
@@ -64,7 +60,7 @@ def register(
 
     
     hashed_password = hash(password)
-    new_user = User(
+    new_user = Users(
         username=username,
         email=email,
         phone=phone,
