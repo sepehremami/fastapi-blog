@@ -1,4 +1,5 @@
 
+import base64
 from fastapi.responses import StreamingResponse
 from io import BytesIO
 from fastapi import UploadFile, File
@@ -123,15 +124,16 @@ async def view_image(response: Response, db:Session=Depends(get_db)):
     # Query image data from database
     
     image = db.query(Image).first()
-    db.close()
+    
 
     # Convert binary data to PIL Image
     img = ImagePillow.open(BytesIO(image.image))
-
     # Create BytesIO buffer to hold JPEG data
     buffer = BytesIO()
     img.save(buffer, format='JPEG')
 
+    base64_encoded_image = base64.b64encode(image.image).decode("utf-8")
     # Return JPEG data as StreamingResponse
-    
-    return StreamingResponse(iter([buffer.getvalue()]), media_type='image/jpeg',)
+    # stream = StreamingResponse(iter([buffer.getvalue()]), media_type='image/jpeg')
+    # print(stream)
+    return base64_encoded_image

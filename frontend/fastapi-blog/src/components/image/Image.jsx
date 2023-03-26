@@ -6,33 +6,22 @@ const client = new FastAPIClient(config)
 
 function ImageViewer(props) {
   const [imageSrc, setImageSrc] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  
+  const response = client.getImage()
+  .then((data) => {setImageSrc(data.data)});
 
-  const loadImage = async () => {
-        try {
-            const response = await client.getImage();
-            console.log(response)
-            const blob =  new Blob([response.data], {type: 'application/jpeg'});
-            const reader = new FileReader();
-            setImageSrc(blob)
-            reader.onload = () => {
-                setImageSrc('gggg');}
-        } catch (error) {
-          console.error('Error loading image:', error);
-        }
-      }
-      
+  console.log(response);
+  
+
 
     
   return (
     <div>
-      <button onClick={() => loadImage()}>Load Image</button>
+     
       {imageSrc && (
-        <div className='bg-black'>
-            <h1>there is a heading</h1>
-            <img src={imageSrc} />
-            
+        <img src={`data:image/jpeg;base64,${imageSrc}`}></img>
 
-        </div>
       )}
     </div>
   );
