@@ -3,7 +3,7 @@ from sqlalchemy import Boolean, create_engine, Column, ForeignKey, Integer, Stri
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
-
+from sqlalchemy import func
 
 class Post(Base):
     __tablename__ = 'post'
@@ -22,6 +22,16 @@ class Post(Base):
     users = relationship("User", back_populates="posts")
     category = relationship("Category", back_populates="posts")
     comments = relationship("Comment", back_populates="post")
+
+
+    @classmethod
+    def get_random_posts(cls, num_posts, session):
+        return session.query(cls).order_by(func.random()).limit(num_posts).all()
+    
+    @classmethod
+    def get_latest_posts(cls, num_posts, session):
+        return session.query(cls).order_by(cls.created_at.desc()).limit(num_posts).all()
+
 
 
 

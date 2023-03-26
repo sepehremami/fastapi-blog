@@ -33,12 +33,10 @@ const MyProfile = () => {
 	const [error, setError] = useState({ label: "", url: "", source: "" });
     const [showForm, setShowForm] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    function handleChange(){
-        console.log('')
-    }
+   
     
     useEffect(() => {
-        
+       
         return () => {
             
         };
@@ -62,7 +60,7 @@ const MyProfile = () => {
         setLoading(true);
         client.getUserPosts()
         .then(  (response) => {
-            
+           
                 setRefreshing(false);
                 setBlogs(response)
                 setLoading(false)
@@ -87,7 +85,7 @@ const MyProfile = () => {
             {loading && (<div><p>Loading...</p></div>)}
             {blogs && (
             <div className="">
-                
+              
                 {blogs.length && (
                     <ProfileView
                     blogs={ blogs }
