@@ -10,12 +10,14 @@ import ProfileView from './pages/profileView';
 import UserProfileToggle from './pages/testf/profile';
 import About from "./pages/About";
 import Profile from "./components/Profile";
+import MyPosts from "./components/MyPosts";
 
 const App = () => {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path={"/my-posts"} element={<MyPosts/>}/>
           <Route path={"/profile"} element={<Profile />} />
           <Route path={"/about"} element={<About/>} />
           <Route path="/" element={<Home />} />
