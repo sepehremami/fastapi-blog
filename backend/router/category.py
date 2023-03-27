@@ -1,4 +1,5 @@
 from router import *
+from crud import *
 
 router = APIRouter(
     prefix="/category",
@@ -6,40 +7,43 @@ router = APIRouter(
 )
 
 @router.get("/")
-async def show_categories(db: Session = Depends(get_db)):
-    categories: List[CategoryBase] = db.query(Category).all()
-    return categories
+def show_categories(db: Session = Depends(get_db)):
+    return category.get_multi(db)
 
-@router.get("/{id}")
-async def show_category(id:int, db: Session = Depends(get_db)):
-    cat: CategoryBase = db.query(Category).filter(Category.id == id).first()
-    return cat
 
-@router.post("/")
-async def add_category(new_category:CategoryBase, db: Session = Depends(get_db)):
-    cat = Category(**new_category.dict())
-    db.add(cat)
-    db.commit()
-    db.refresh(cat)
-    return cat
-
-@router.delete("/{id}")
-async def delete_category(id: int, db: Session=Depends(get_db)):
-    category = db.query(Category).filter(Category.id == id)
-    if not category.first():
+@router.get("/{id}", status_code=status.HTTP_200_OK)
+def show_category(id:int, db: Session = Depends(get_db)):
+    result = category.get(db, id)
+    if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code = result,
             detail="category with id {id} does not exit"
         )
-    category.delete(synchronize_session=False)
-    db.commit()
+    return {'message': result}
+
+
+@router.post("/")
+def add_category(new_category:CategoryBase, db: Session = Depends(get_db)):
+    return category.create(new_category, db)
+
+
+@router.delete("/{id}")
+def delete_category(id: int, db: Session=Depends(get_db)):
+    result = category.remove(db, id)
+    if result == status.HTTP_404_NOT_FOUND:
+        raise HTTPException(
+            status_code = result,
+            detail="category with id {id} does not exit"
+        )
     return {"data":"category deleted"}
 
+
 @router.put("/{id}")
-async def update_category(id:int, updated_category:CategoryBase, db: Session=Depends(get_db)):
-    category = db.query(Category).filter(Category.id == id)
-    if not category.first():
+def update_category(id:int, updated_category:CategoryBase, db: Session=Depends(get_db)):
+    result = category.update(id, db, Category)
+    if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="user with id {id} does not exit")
-    category.update(updated_category.dict(), synchronize_session=False)
+            status_code = result,
+            detail="category with id {id} does not exit"
+        )
+    return {'msg':'category updated'}

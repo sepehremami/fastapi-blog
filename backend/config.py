@@ -2,9 +2,9 @@ from pydantic import BaseSettings
 import os
 
 class Setting(BaseSettings):
-    database_hostname:str
-    database_port:str
-    database_name:str= 'fg'
+    database_hostname:str ="localhost"
+    database_port:str = "5432"
+    database_name:str= 'online_shop'
     database_password:str = '11223'
     database_username:str=  "postgres"
     secret_key:str

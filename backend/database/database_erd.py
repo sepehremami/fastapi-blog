@@ -14,7 +14,6 @@ if not database_exists(engine.url):
 
 
 sqlsession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
 
 def get_db():
     db = sqlsession()

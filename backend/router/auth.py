@@ -7,10 +7,12 @@ from pydantic import BaseModel
 
 router = APIRouter(tags=['Authentication'])
 
+
 @router.post('/auth/login/')
 def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
     # print(user_credentials.username, user_credentials.password)
     user = db.query(User).filter(User.email == user_credentials.username).first()
+
 
     if not user:
         raise HTTPException(
@@ -37,16 +39,19 @@ def register(user: UserModel, db: Session = Depends(get_db)):
             status_code=status.HTTP_409_CONFLICT,
             detail="Username already taken"
         )
+
     if db.query(User).filter(User.email == user.email).first():
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered"
         )
+
     hashed_password = hash(user.password)
     new_user = User(
         username=user.username,
         email=user.email,
         phone=user.phone,
+
         password=hashed_password
     )
     db.add(new_user)
