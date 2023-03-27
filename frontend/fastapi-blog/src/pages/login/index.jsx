@@ -34,7 +34,7 @@ const Login = () => {
 
     client.login(loginForm.email, loginForm.password)
       .then( () => {
-        navigate('/my-recipes')
+        navigate('/auth/me')
       })
       .catch( (err) => {
         setLoading(false)
@@ -43,16 +43,15 @@ const Login = () => {
       });
   }
 
-
   return (
       <>
       <section className="">
-        <DashboardHeader />
+        <DashboardHeader/>
         <div className="border-b border-black">
             <div className="border-r bg-white">
               <header>
                 {/* <img className="w-20 mx-auto mb-5" src="https://img.icons8.com/fluent/344/year-of-tiger.png" /> */}
-                <div className="border-r bg-white">
+                <div className="bg-white">
                 <svg className="bg-white" width="54" height="54" viewBox="0 0 54 54" fill='white'  xmlns="http://www.w3.org/2000/svg" >
                   <path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/>
                 </svg>

@@ -1,56 +1,30 @@
-import Recipe from "../Recipe";
+import Post from "../Post";
 import React, {useState} from "react";
 import PopupModal from "../Modal/PopupModal";
 import FormInput from "../FormInput/FormInput";
 
-const RecipeTable = ({recipes}) => {
+const RecipeTable = ({blogs}) => {
 
-  const [recipeInfoModal, setRecipeInfoModal] = useState(false)
+  	const [postInfoModal, setPostInfoModal] = useState(false)
 
     return (
       <>
-        <div className="sections-list">
-          {recipes.length && (
-              recipes.map((recipe) => (
-                <Recipe showRecipeInfoModal={() => setRecipeInfoModal(recipe)} key={recipe.id} recipe={recipe}  />
-              ))
-          )}
-          {!recipes.length && (
+        <div className="grid sections-list">
+			<div>{(blogs.map((blog)=> {}))}</div>
+          {blogs.length && (
+              blogs.map((blog) => (
+				<Post
+				  	showPostInfoModal={() => setPostInfoModal(blog)}
+					key={blog.id}
+					blog={blog} />
+				  ))
+				)}
+				  
+		  
+          {!blogs.length && (
               <p>No recipes found!</p>
           )}
         </div>
-        {recipeInfoModal && <PopupModal
-						modalTitle={"Recipe Info"}
-						onCloseBtnPress={() => {
-							setRecipeInfoModal(false);
-						}}
-					>
-						<div className="mt-4 text-left">
-							<form className="mt-5">
-								<FormInput
-									disabled
-									type={"text"}
-									name={"label"}
-									label={"Label"}
-									value={recipeInfoModal?.label}
-								/>
-								<FormInput
-									disabled
-									type={"text"}
-									name={"url"}
-									label={"Url"}
-									value={recipeInfoModal?.url}
-								/>
-								<FormInput
-									disabled
-									type={"text"}
-									name={"source"}
-									label={"Source"}
-									value={recipeInfoModal?.source}
-								/>
-							</form>
-						</div>
-					</PopupModal>}
       </>
     )
 }

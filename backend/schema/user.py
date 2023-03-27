@@ -1,6 +1,11 @@
 from datetime import datetime
 from pydantic import BaseModel, EmailStr, constr
 
+class UserModel(BaseModel):
+    username: str
+    email: str
+    password: str
+    phone: str
 
 class UserBase(BaseModel):
     username:str
@@ -8,16 +13,15 @@ class UserBase(BaseModel):
     phone:str
     # password:str
     
+    
     class Config:
         orm_mode = True
 
-class UserOut(BaseModel):
+class UserOut(UserBase):
     id:int
-    username: str
-    email: str
-    created_at: datetime
-    class Config:
-        orm_mode=True
+    created_at:datetime
+    is_superuser:bool
+
 
         
 class UserCreate(UserBase):

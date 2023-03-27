@@ -15,6 +15,7 @@ class FastAPIClient {
 
     this.login = this.login.bind(this);
     this.apiClient = this.getApiClient(this.config);
+    this.isSperUser = false
   }
 
   /* ----- Authentication & User Operations ----- */
@@ -43,20 +44,27 @@ class FastAPIClient {
 
   fetchUser() {
     return this.apiClient.get('/auth/me').then(({data}) => {
-      localStorage.setItem('user', JSON.stringify(data));
+      const userData = {...data};
+      console.log({...data})
+      
+      if (userData['is_superuser'] == true) {
+        this.isSperUser = true;
+      }
+      localStorage.setItem('user', userData);
       return data;
     });
   }
 
-  register(email, password, fullName) {
+  register(username, email, password, phone) {
     const registerData = {
-      email,
-      password,
-      full_name: fullName,
+      username: username,
+      email: email,
+      password: password,
+      phone: phone,
       is_active: true,
     };
 
-    return this.apiClient.post('/auth/signup', registerData).then(
+    return this.apiClient.post('/auth/register', registerData).then(
         (resp) => {
           return resp.data;
         });
@@ -82,44 +90,62 @@ class FastAPIClient {
     return client;
   }
 
-  getRecipe(recipeId) {
+  getPost(recipeId) {
     return this.apiClient.get(`/posts/${recipeId}`);
   }
 
-  getRecipes(keyword, limit) {
-    return this.apiClient.get(`/posts?keyword=${keyword}&limit=${limit}`).then(({data}) => {
+  getPosts(keyword, limit, skip) {
+    return this.apiClient.get(`/posts/search/?skip=${skip}&limit=${limit}&search=${keyword}`).then(({data}) => {
       return data;
     });
   }
 
-  getUserRecipes() {
-    return this.apiClient.get(`/recipes/my-recipes/`).then(({data}) => {
+  getLatestPosts(limit=10) {
+    return this.apiClient.get(`/posts/latest/?num_posts=${limit}`).then(({data}) => {
       return data;
     });
   }
 
-  createRecipe(label, url, source, submitter_id) {
+  getRandomPosts(limit) {
+    return this.apiClient.get(`/posts/random/?num_posts=${limit}`).then(({data}) => {
+      return data;
+    });
+  }
+
+
+  getUserPosts() {
+    return this.apiClient.get('/posts').then(({data}) => {
+      return data;
+    });
+  }
+
+  createPost(title, description) {
     const recipeData = {
-      label,
-      url,
-      source,
-      submitter_id: submitter_id,
+      title,
+      description
     };
-    return this.apiClient.post(`/recipes/`, recipeData);
+    return this.apiClient.post(`/posts/`, recipeData);
   }
 
-
-  deleteRecipe(recipeId) {
-    return this.apiClient.delete(`/recipes/${recipeId}`);
+  deletePost(PostId) {
+    return this.apiClient.delete(`/posts/${PostId}`);
   }
-}
+
+  getImage() {
+    return this.apiClient.get(`/image/view/`);
+  }
+
+  sendImage(data) {
+    return this.apiClient.post(`/user/image/`, {...data})
+  }
+};
 
 
 // every request is intercepted and has auth header injected.
 function localStorageTokenInterceptor(config) {
   const headers = {};
   const tokenString = localStorage.getItem('token');
-  console.log(tokenString)
+
   if (tokenString) {
     const token = JSON.parse(tokenString);
     
@@ -135,5 +161,6 @@ function localStorageTokenInterceptor(config) {
   config['headers'] = headers;
   return config;
 }
+
 
 export default FastAPIClient;

@@ -13,6 +13,7 @@ oauth2_scheme = OAuth2PasswordBearer(
 
 
 SECRET_KEY = settings.secret_key
+print(SECRET_KEY)
 ALGORYTHM = settings.algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = int(settings.access_tocken_expire_minutes)
 
@@ -34,6 +35,7 @@ def get_current_user(access_token = Depends(oauth2_scheme), db:Session = Depends
 
     try:
         payload: dict = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORYTHM])
+
         user_id: str = payload.get("user_id")
 
         if user_id is None:

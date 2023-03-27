@@ -23,6 +23,7 @@ def get_user(username:str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return UserBase(**user.dict())
 
+
 def authenticate_user(username:str, password:str):
     user = get_user(username)
     if not user:

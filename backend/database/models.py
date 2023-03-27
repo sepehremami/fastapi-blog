@@ -1,9 +1,9 @@
 
-from sqlalchemy import Boolean, create_engine, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Boolean, LargeBinary, create_engine, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from database.base_class import Base
 from datetime import datetime
-
+from sqlalchemy import func
 
 class Users(Base):
 
@@ -33,10 +33,18 @@ class Post(Base):
     category = relationship("Category", back_populates="posts")
     comments = relationship("Comment", back_populates="post")
 
-
   #  Foreign Keys
     user_id = Column(Integer, ForeignKey('users.id'))
     category_id = Column(Integer, ForeignKey('category.id'))
+
+    @classmethod
+    def get_random_posts(cls, num_posts, session):
+        return session.query(cls).order_by(func.random()).limit(num_posts).all()
+    
+    @classmethod
+    def get_latest_posts(cls, num_posts, session):
+        return session.query(cls).order_by(cls.created_at.desc()).limit(num_posts).all()
+
 
 
 
@@ -66,5 +74,27 @@ class Comment(Base):
     post = relationship("Post", back_populates="comments")
 
 
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True)
+    phone = Column(String)
+   
+    password = Column(String)
+    is_superuser = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow())
+
+    # Relationship with Post and Comment models
+    posts = relationship("Post", back_populates="users")
+    comments = relationship("Comment", back_populates="users")
 
 
+
+class Image(Base):
+    __tablename__ = "images"
+    id = Column(Integer, primary_key=True)
+    image = Column(LargeBinary, nullable=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    post_id = Column(Integer, ForeignKey('post.id'))
