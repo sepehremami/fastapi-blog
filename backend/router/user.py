@@ -1,8 +1,13 @@
 
+import base64
+from io import BytesIO
+
+from fastapi import File, UploadFile
 from oauth2 import get_current_user
 from router import *
 import utils
 from crud import *
+from PIL import Image as ImagePillow
 
 
 router = APIRouter(
@@ -12,25 +17,7 @@ router = APIRouter(
 
 @router.get("/users")
 def get_users(request: Request , db: Session = Depends(get_db)):
-     return users.get_multi(db)
-<<<<<<< Updated upstream
-
-
-@router.get("/users/{id}") 
-def get_user(id : int, db : Session = Depends(get_db)):
-    result = users.get(db, id)
-    if result == status.HTTP_404_NOT_FOUND:
-        raise HTTPException(
-            status_code = result,
-            detail=f"user with id {id} does not exit"
-        )
-    return {'message': result}
-
-async def get_users(request: Request , db: Session = Depends(get_db)):
-    users: List[UserBase] = db.query(User).all()
-    return users
-=======
->>>>>>> Stashed changes
+    return users.get_multi(db)
 
 
 @router.get("/users/{id}") 
@@ -79,7 +66,7 @@ def update_user(id:int, updated_user:UserBase, db: Session=Depends(get_db)):
 
 @router.patch("/users/{id}")
 def update_hero(id: int, updated_user: UserBase,db: Session=Depends(get_db)):
-    user = db.query(Users).filter(Users.id == id).first()
+    user = db.query(User).filter(User.id == id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     user_data = updated_user.dict(exclude_unset=True)
