@@ -61,7 +61,7 @@ function DashboardHeader() {
   
 
   return (
-      <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+      <nav className="bg-primary border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
             <span className="font-semibold text-xl tracking-tight">FastBlog - A Project</span>
 

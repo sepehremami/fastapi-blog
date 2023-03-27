@@ -7,27 +7,20 @@ import DashboardHeader from '../../components/DashboardHeader'
 
 const client = new FastAPIClient(config);
 
-// Sample User object
-const user = {
-    username: 'JohnDoe',
-    email: 'johndoe@example.com',
-    image: 'https://example.com/images/johndoe.jpg'
-  };
-  
-
 function MyProfile() {
-    // State variables to keep track of form data and uploaded image
-    const [formData, setFormData] = useState({
-      image: null
-    });
-    const [uploadedImage, setUploadedImage] = useState(user.image);
-  
+    client.fetchUser()
+    const user = localStorage.getItem('user');
+    console.log(user.slice(0,5))
+   
+    const [formData, setFormData] = useState({image: null});
+    const [uploadedImage, setUploadedImage] = useState(null);
+    
     // On form submit, prevent default behavior, upload file and update uploadedImage state
     function handleSubmit(event) {
       event.preventDefault();
       const formDataObj = new FormData();
       formDataObj.append('image', formData.image);
-      client.put('/api/save-image', formDataObj)
+      client.sendImage('/user/image', formDataObj)
         .then(response => {
           setUploadedImage(response.data.imageURL);
         })
@@ -47,10 +40,10 @@ function MyProfile() {
     // useEffect to update user image when uploadedImage state changes
     useEffect(() => {
       // call backend API to update the user object with the new image URL
-      axios.put('/api/user', { image: uploadedImage })
+      client.sendImage({ image: uploadedImage })
         .then(response => {
           // update the user object with the new image URL
-          user.image = uploadedImage;
+          console.log(data)
         })
         .catch(error => {
           console.log(error);
@@ -60,26 +53,25 @@ function MyProfile() {
     return (
       <div className="container items-center p-4">
       <DashboardHeader />
-        {user.image && (
-          <div className="mr-4">
-            <img className="h-64 w-64 rounded-full object-cover" src={user.image} alt={`Profile image for ${user.username}`} />
+        {user && (
+          <div className="mr-4 h-64 w-64 rounded-full object-cover overflow: hidden;">
+            <ImageViewer id={user.id} className=""/>
           </div>
         )}
-        <div>
-          <h2 className="text-xl font-bold">{user.username}</h2>
-          <p className="text-gray-600">{user.email}</p>
-        </div>
+        {user && (<div>
+          <h2>{user.username}</h2>
+          <p>{user.email}</p>
+        </div>)}
         {uploadedImage && (
           <div className="ml-4">
-            <img className="h-64 w-64 rounded-full object-cover" src={uploadedImage} alt="Uploaded image" />
+            <img className="" src={uploadedImage} alt="Uploaded image" />
           </div>
         )}
         <form onSubmit={handleSubmit} className="my-4">
           <input type="file" name="image" onChange={handleInputChange} className="text-gray-800" />
           <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4">Upload</button>
         </form>
-          <ImageViewer/>
-        
+       
       </div>
     );
   }
