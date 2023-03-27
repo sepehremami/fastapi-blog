@@ -10,10 +10,10 @@ class Setting(BaseSettings):
     secret_key:str
     algorithm:str= "HS256"
     access_tocken_expire_minutes:str = "30"
-    origins = [
+    origins = ['*',
     "http://localhost:8000",
     "http://localhost:3000/*",
-    "http://localhost:3000",
+    "http://localhost:3000/",
     "http://0.0.0.0:3000",
     "http://0.0.0.0:3000/auth/login/",
     "http://127.0.0.1:3000",

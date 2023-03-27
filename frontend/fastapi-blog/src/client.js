@@ -44,8 +44,9 @@ class FastAPIClient {
 
   fetchUser() {
     return this.apiClient.get('/auth/me').then(({data}) => {
-      const userData = data;
-
+      const userData = {...data};
+      console.log({...data})
+      
       if (userData['is_superuser'] == true) {
         this.isSperUser = true;
       }
@@ -128,6 +129,14 @@ class FastAPIClient {
 
   deletePost(PostId) {
     return this.apiClient.delete(`/posts/${PostId}`);
+  }
+
+  getImage() {
+    return this.apiClient.get(`/image/view/`);
+  }
+
+  sendImage(data) {
+    return this.apiClient.post(`/user/image/`, {...data})
   }
 };
 
