@@ -20,7 +20,7 @@ async def get_users(request: Request , db: Session = Depends(get_db)):
 async def get_users(request: Request , db: Session = Depends(get_db)):
     users: List[UserBase] = db.query(User).all()
 
-    return templates.TemplateResponse("myPosts.html", {"request": request, "users": users})
+    return {"request": request, "users": users}
 
 
 @router.get("/users/{id}")
@@ -28,8 +28,13 @@ def get_user(id : int, response : Response, db : Session = Depends(get_db)) -> d
     user = db.query(User).filter(User.id == id).first()
     return user
 
+@router.get("/users/{username}")
+def get_user(username : str, response : Response, db : Session = Depends(get_db)) -> dict:
+    user = db.query(User).filter(User.username == username).first()
+    return user
 
-@router.post("/users", status_code= status.HTTP_201_CREATED)
+
+@router.post("/users", status_code=status.HTTP_201_CREATED)
 async def create_user(new_user: UserCreate, db: Session = Depends(get_db)):
     hashed_password = utils.hash(new_user.password)
     new_user.password = hashed_password
