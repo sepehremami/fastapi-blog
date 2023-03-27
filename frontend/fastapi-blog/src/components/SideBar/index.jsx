@@ -67,6 +67,7 @@ const sideBar = ({menu}) => {
 
                               </Link>
                           </li>
+
                       </ul>
                   </nav>
               </div>
