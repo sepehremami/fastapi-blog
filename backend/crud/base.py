@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from fastapi import status
 
-from database import Base, Users, Post, Comment, Category
+from database import Base, Users, Post, Comment, Category, User
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -24,7 +24,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     
 
     def get_multi(self, db: Session, skip: int = 0, limit: int = 150, search: Optional[str]=""):
-        return db.query(self.model).filter(Post.title.contains(search)).offset(skip).limit(limit).all()
+        return db.query(self.model).all()
         
 
     def create(self, obj_in: CreateSchemaType, db: Session):
@@ -59,7 +59,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return status.HTTP_200_OK
     
 
-users = CRUDBase(Users)
+users = CRUDBase(User)
 post = CRUDBase(Post)
 comment = CRUDBase(Comment)
 category = CRUDBase(Category)

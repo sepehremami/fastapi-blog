@@ -5,7 +5,7 @@ import os
 class Setting(BaseSettings):
     database_hostname:str ="localhost"
     database_port:str = "5432"
-    database_name:str= 'online_shop'
+    database_name:str= 'fastapi'
     database_password:str = '11223'
     database_username:str=  "postgres"
     secret_key:str

@@ -6,7 +6,7 @@ from sqlalchemy.sql import func
 
 SQLALCHEMY_DATABASE_URL = f"postgresql://{settings.database_username}@{settings.database_hostname}/{settings.database_name}"
 
-
+print(SQLALCHEMY_DATABASE_URL)
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 if not database_exists(engine.url):

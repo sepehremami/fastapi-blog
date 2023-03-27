@@ -7,7 +7,7 @@ router = APIRouter(prefix="/comment", tags=["Comment"])
 @router.get("/", response_model= List[CommentBase])
 def get_user_comments(
         db :Session = Depends(get_db),
-        current_user : Users =  Depends(oauth2.get_current_user),
+        current_user  =  Depends(oauth2.get_current_user),
         skip: int = 0,
         limit: int = 10
         ):
@@ -19,7 +19,7 @@ def get_user_comments(
 def get_comment(
         id : int,
         db: Session = Depends(get_db),
-        current_user: Users = Depends(oauth2.get_current_user)):
+        current_user = Depends(oauth2.get_current_user)):
     
     result = comment.get(db, id)
     
@@ -34,14 +34,14 @@ def get_comment(
 @router.post("/", status_code= status.HTTP_201_CREATED)
 def create_comment(new_comment : CommentBase, 
                    db :Session = Depends(get_db),
-                   current_user : Users = Depends(oauth2.get_current_user)):
+                   current_user  = Depends(oauth2.get_current_user)):
     
     return comment.create(new_comment, db)
 
 
 @router.delete("/{id}")
 def delete_comment(id: int, db: Session = Depends(get_db),
-                   current_user : Users = Depends(oauth2.get_current_user)):
+                   current_user  = Depends(oauth2.get_current_user)):
 
     result = comment.remove(db, id)
     if result == status.HTTP_404_NOT_FOUND:

@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
-from database import Users, get_db
+from database import User, get_db
 from fastapi import status
 from schema import UserBase
 

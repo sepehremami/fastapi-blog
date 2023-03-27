@@ -10,6 +10,7 @@ class_registry: t.Dict = {}
 class Base:
     id: t.Any
     __name__: str
+    __table_args__ = {'extend_existing': True}
 
     # Generate __tablename__ automatically
     @declared_attr
