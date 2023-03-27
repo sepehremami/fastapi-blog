@@ -35,12 +35,14 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = 
 def register(user: UserModel, db: Session = Depends(get_db)):
 
     if db.query(User).filter(User.username == user.username).first():
+
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Username already taken"
         )
 
     if db.query(User).filter(User.email == user.email).first():
+
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered"

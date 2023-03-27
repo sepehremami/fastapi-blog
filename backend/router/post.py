@@ -2,8 +2,12 @@
 from fastapi import Query
 from schema.post import PostOut
 from router import *
+<<<<<<< Updated upstream
 from crud import *
 from sqlalchemy import func
+=======
+
+>>>>>>> Stashed changes
 
 
 router = APIRouter(
@@ -11,6 +15,7 @@ router = APIRouter(
     tags=["Post"]
 )
 
+<<<<<<< Updated upstream
 
 @router.get("/")
 def get_user_posts(db: Session = Depends(get_db), current_user: Users = Depends(oauth2.get_current_user),
@@ -50,12 +55,46 @@ def get_post(id:int, db: Session = Depends(get_db),
 
     if result == status.HTTP_404_NOT_FOUND:
 
+=======
+@router.get("/")
+def get_user_posts(
+        db: Session = Depends(get_db), 
+        current_user: User = Depends(oauth2.get_current_user),
+        skip: int = 0,
+        limit:int=10,
+        search: Optional[str]=""):
+
+    posts: List[Post] = db.query(Post).\
+        filter(Post.user_id==current_user.id).\
+        filter(Post.title.contains(search)).\
+        limit(limit).offset(skip).all()
+    
+
+
+@router.get("/{id}", status_code=200)
+def get_post(
+        id:int,
+        db: Session = Depends(get_db),
+        current_user: User = Depends(oauth2.get_current_user)):
+    
+    post = db.query(Post).filter(Post.id==id).first()
+    if not post:
+>>>>>>> Stashed changes
         raise HTTPException(
             status_code = result,
             detail=f"post with id {id} does not exit"
         )
+<<<<<<< Updated upstream
     return {'message': result}
 
+=======
+    if post.user_id != current_user.id:
+         raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Operation not permitted"
+        )
+    return {'message': post}
+>>>>>>> Stashed changes
 
 
 @router.post("/", status_code= status.HTTP_201_CREATED)

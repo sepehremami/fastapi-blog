@@ -1,8 +1,8 @@
 
+from oauth2 import get_current_user
 from router import *
 import utils
 from crud import *
-
 
 
 router = APIRouter(
@@ -13,6 +13,7 @@ router = APIRouter(
 @router.get("/users")
 def get_users(request: Request , db: Session = Depends(get_db)):
      return users.get_multi(db)
+<<<<<<< Updated upstream
 
 
 @router.get("/users/{id}") 
@@ -28,12 +29,20 @@ def get_user(id : int, db : Session = Depends(get_db)):
 async def get_users(request: Request , db: Session = Depends(get_db)):
     users: List[UserBase] = db.query(User).all()
     return users
+=======
+>>>>>>> Stashed changes
 
 
-@router.get("/users/{id}")
-def get_user(id : int, response : Response, db : Session = Depends(get_db)) -> dict:
-    user = db.query(User).filter(User.id == id).first()
-    return user
+@router.get("/users/{id}") 
+def get_user(id : int, db : Session = Depends(get_db)):
+    result = users.get(db, id)
+    if result == status.HTTP_404_NOT_FOUND:
+        raise HTTPException(
+            status_code = result,
+            detail=f"user with id {id} does not exit"
+        )
+    return {'message': result}
+
 
 
 
