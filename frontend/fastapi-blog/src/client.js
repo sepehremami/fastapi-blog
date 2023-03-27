@@ -1,6 +1,7 @@
 import config from './config';
 import jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
+import {json} from "react-router-dom";
 
 const axios = require('axios');
 
@@ -44,13 +45,14 @@ class FastAPIClient {
 
   fetchUser() {
     return this.apiClient.get('/auth/me').then(({data}) => {
-      const userData = data;
-
+      const userData = {...data};
+      const userJson = JSON.stringify(userData)
+      console.log(userData,userJson)
       if (userData['is_superuser'] == true) {
         this.isSperUser = true;
       }
-      localStorage.setItem('user', userData);
-      return data;
+      localStorage.setItem('user', userJson);
+      return userJson;
     });
   }
 

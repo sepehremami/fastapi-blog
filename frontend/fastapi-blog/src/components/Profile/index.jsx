@@ -6,7 +6,9 @@ import config from "../../config";
 
 const client = new FastAPIClient(config);
 
-const user = localStorage.getItem("user");
+const userJson = localStorage.getItem("user");
+const user = JSON.parse(userJson);
+console.log(userJson, user)
 
 
 const Profile = () => {
@@ -134,7 +136,7 @@ const Profile = () => {
                                       <img className="h-16 w-16 rounded-full mx-auto"
                                            src="https://avatars2.githubusercontent.com/u/24622175?s=60&amp;v=4"
                                            alt=""/>
-                                          <a href="#" className="text-main-color">James</a>
+                                          <a href="#" className="text-main-color">user1</a>
                                   </div>
                                   <div className="text-center my-2">
                                       <img className="h-16 w-16 rounded-full mx-auto"
