@@ -3,28 +3,27 @@ import Footer from "../Footer";
 import FastAPIClient from "../../client";
 import config from "../../config";
 import SideBar from "../SideBar";
+import {useState} from "react";
 
 
-
-const client = new FastAPIClient(config);
-
-const userJson = localStorage.getItem("user");
-const user = JSON.parse(userJson);
-
-let Activity;
-
-if (user.isActive){
-    Activity = "InActive"
-} else {
-    Activity = "Active"
-}
 
 const Profile = () => {
+
+
+
+    const client = new FastAPIClient(config);
+    const userJson = localStorage.getItem("user");
+    const user = JSON.parse(userJson);
+
+
+
+    console.log(user)
+
   return(
       <div className={"font-body bg-slate-200 dark:bg-gradient-to-b dark:from-secondary-1 dark:to-primary"}>
           <DashboardHeader/>
           <main className="grid grid-cols-5 ">
-              <SideBar/>
+              <SideBar menu={"profile"}/>
 
               <div className="container mx-auto my-5 p-5 col-span-4">
                   <div className="md:flex no-wrap md:-mx-2 ">
@@ -35,7 +34,9 @@ const Profile = () => {
                                        src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
                                        alt=""/>
                               </div>
-                              <h1 className="text-gray-900 dark:text-gray-200 font-bold text-xl leading-8 my-1">{user.username}</h1>
+
+                              {user && (<h1
+                                  className="text-gray-900 dark:text-gray-200 font-bold text-xl leading-8 my-1">{user.username}</h1>)}
                               <h3 className="text-gray-600 font-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
                               <p className="text-sm text-gray-500 hover:text-gray-600 leading-6">Lorem ipsum dolor sit
                                   amet
@@ -45,12 +46,11 @@ const Profile = () => {
                                   className="bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-200 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                                   <li className="flex items-center py-3">
                                       <span>Status</span>
-                                      <span className="ml-auto"><span
-                                          className="bg-green-500 py-1 px-2 rounded text-white text-sm">{Activity}</span></span>
+                                      <span className="ml-auto"><span className="bg-green-500 py-1 px-2 rounded text-white text-sm">Active</span></span>
                                   </li>
                                   <li className="flex items-center py-3">
                                       <span>Member since</span>
-                                      <span className="ml-auto">{user.created_at.slice(0,10)}</span>
+                                      {/*<span className="ml-auto">{user.created_at.slice(0,10)}</span>*/}
                                   </li>
                               </ul>
                           </div>
@@ -138,7 +138,7 @@ const Profile = () => {
                                           <div className="px-4 py-2 font-semibold">Email.</div>
                                           <div className="px-4 py-2">
                                               <a className="text-blue-800"
-                                                 href="mailto:jane@example.com">{user.email}</a>
+                                                  href="mailto:jane@example.com">{user.email}</a>
                                           </div>
                                       </div>
                                   </div>

@@ -37,13 +37,7 @@ const MyProfile = () => {
         console.log('')
     }
     
-    useEffect(() => {
-        
-        return () => {
-            
-        };
-    }, [blogs]);
-    
+
 
     useEffect(() => {
         const tokenString = localStorage.getItem("token");

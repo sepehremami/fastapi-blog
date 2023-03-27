@@ -4,13 +4,16 @@ import {Link} from "react-router-dom";
 
 
 
-const sideBar = (menu) => {
+const sideBar = ({menu}) => {
 
+    const [activeLink, setActiveLink] = useState("/" + menu);
     const [toggleMenu, setToggleMenu] = useState(false);
 
-    if (menu === "profile"){
 
+    const handleActiveLink = (path) => {
+        setActiveLink(path);
     }
+
   return(
       <div>
           <div className={`col-span-1 md:h-full h-1300 w-full bg-slate-200 dark:bg-gradient-to-t dark:from-slate-900 dark:to-secondary-2 ${toggleMenu ? "hidden" : "block"}`} id="menu1" >
@@ -31,8 +34,8 @@ const sideBar = (menu) => {
                       </div>
 
                       <ul className="text-sm mt-6 ">
-                          <li className="text-gray-700 dark:text-gray-100 uppercase py-1 hover:bg-gray-200 dark:hover:bg-primary transition ease-out duration-500  ">
-                              <Link to="/profile" className="px-4 flex justify-end ">
+                          <li onClick={() => handleActiveLink("/profile")} className={activeLink === '/profile' ? 'text-gray-700 dark:text-gray-100 uppercase py-1 hover:bg-gray-200 dark:hover:bg-primary transition ease-out duration-500' : 'py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500   hover:border-gray-400'}>
+                              <Link to="/profile" className="px-4 flex justify-end " >
                                   <span>MY PROFILE</span>
                                   <svg className="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                                        viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -42,8 +45,8 @@ const sideBar = (menu) => {
 
                               </Link>
                           </li>
-                          <li className="py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500   hover:border-gray-400">
-                              <Link to="/my-posts" className="px-4 flex justify-end  ">
+                          <li  onClick={() => handleActiveLink("/my-posts")} className={activeLink === '/my-posts' ? 'text-gray-700 dark:text-gray-100 uppercase py-1 hover:bg-gray-200 dark:hover:bg-primary transition ease-out duration-500' : 'py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500   hover:border-gray-400'}>
+                              <Link to="/my-posts" className="px-4 flex justify-end  " >
                                   <span>MY Posts</span>
                                   <svg className="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                                        viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
@@ -53,8 +56,8 @@ const sideBar = (menu) => {
 
                               </Link>
                           </li>
-                          <li className="py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500 hover:border-gray-400">
-                              <Link to="#" className="px-4 flex justify-end  ">
+                          <li onClick={() => handleActiveLink("/setting")} className={activeLink === '/setting' ? 'text-gray-700 dark:text-gray-100 uppercase py-1 hover:bg-gray-200 dark:hover:bg-primary transition ease-out duration-500' : 'py-1 hover:bg-gray-200 dark:text-gray-500 dark:hover:bg-primary transition ease-out duration-500   hover:border-gray-400'}>
+                              <Link to="#" className="px-4 flex justify-end " >
                                   <span>Setting</span>
                                   <svg className="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                                        viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
