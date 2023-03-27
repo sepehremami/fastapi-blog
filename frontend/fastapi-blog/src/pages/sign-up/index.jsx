@@ -46,7 +46,7 @@ const SignUp = () => {
     console.log(JSON.stringify(registerForm));
 
 
-    client.register(registerForm.email, registerForm.password, registerForm.username, registerForm.phone)
+    client.register(registerForm.username,registerForm.email, registerForm.password,  registerForm.phone)
       .then( () => {
         navigate('/login')
       })
@@ -86,7 +86,7 @@ const SignUp = () => {
               <form onSubmit={(e) => onRegister(e)}>
                   <FormInput 
                     type={"text"} 
-                    name={"fullName"}
+                    name={"username"}
                     label={"Full Name"}
                     error={error.username}
                     value={registerForm.username}

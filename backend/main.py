@@ -4,7 +4,7 @@ from router import routers
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
-Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
