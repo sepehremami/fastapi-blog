@@ -1,7 +1,7 @@
 
 import base64
 from io import BytesIO
-
+from schema import UserOut, UserCreate
 from fastapi import File, UploadFile
 from oauth2 import get_current_user
 from router import *
@@ -15,12 +15,12 @@ router = APIRouter(
 )
 
 
-@router.get("/users")
+@router.get("/users", response_model=List[UserOut])
 def get_users(request: Request , db: Session = Depends(get_db)):
     return users.get_multi(db)
 
 
-@router.get("/users/{id}") 
+@router.get("/users/{id}", response_model=UserOut) 
 def get_user(id : int, db : Session = Depends(get_db)):
     result = users.get(db, id)
     if result == status.HTTP_404_NOT_FOUND:
@@ -28,12 +28,12 @@ def get_user(id : int, db : Session = Depends(get_db)):
             status_code = result,
             detail=f"user with id {id} does not exit"
         )
-    return {'message': result}
+    return result
 
 
 
 
-@router.post("/users", status_code= status.HTTP_201_CREATED)
+@router.post("/users", response_model=UserOut, status_code= status.HTTP_201_CREATED)
 def create_user(new_user: UserCreate, db: Session = Depends(get_db)):
 
     hashed_password = utils.hash(new_user.password)
@@ -42,18 +42,18 @@ def create_user(new_user: UserCreate, db: Session = Depends(get_db)):
 
 
 
-@router.delete("/users/{id}")
+@router.delete("/users/{id}", status_code=status.HTTP_200_OK)
 def delete_user(id: int, db: Session=Depends(get_db)):
     result = users.remove(db, id)
     if result == status.HTTP_404_NOT_FOUND:
         raise HTTPException(
             status_code = result,
-            detail=f"user with id {id} does not exit"
+            detail=f"user does not exit"
         )
 
     return {"data":"user deleted"}
 
-@router.put("/users/{id}")
+@router.put("/users/{id}", response_model=UserOut)
 def update_user(id:int, updated_user:UserBase, db: Session=Depends(get_db)):
     result = users.update(id, db, updated_user)
     if result == status.HTTP_404_NOT_FOUND:
@@ -64,7 +64,7 @@ def update_user(id:int, updated_user:UserBase, db: Session=Depends(get_db)):
     return {'msg':'user updated'}
 
 
-@router.patch("/users/{id}")
+@router.patch("/users/{id}", response_model=UserOut)
 def update_hero(id: int, updated_user: UserBase,db: Session=Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if not user:

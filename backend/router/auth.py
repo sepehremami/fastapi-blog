@@ -3,7 +3,8 @@ from router import *
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from utils import verify, hash
 from schema.user import UserModel
-from pydantic import BaseModel
+from database.models import User
+
 
 router = APIRouter(tags=['Authentication'])
 
@@ -29,8 +30,6 @@ def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db:Session = 
     return {"access_token":access_tocken, "token_type": "bearer"}
 
 
-
-
 @router.post("/auth/register")
 def register(user: UserModel, db: Session = Depends(get_db)):
 
@@ -53,7 +52,6 @@ def register(user: UserModel, db: Session = Depends(get_db)):
         username=user.username,
         email=user.email,
         phone=user.phone,
-
         password=hashed_password
     )
     db.add(new_user)

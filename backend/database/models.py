@@ -64,6 +64,8 @@ class Comment(Base):
     parent_id = Column(Integer, default=None)
     description = Column(String)
     confirmed = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow())
+
 
     # Foreign Keys
     user_id = Column(Integer, ForeignKey('users.id'))

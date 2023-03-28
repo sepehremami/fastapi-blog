@@ -4,7 +4,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from fastapi import status
-
+from schema import PostCreate, PostUpdate
 from database import Base, Users, Post, Comment, Category, User
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -59,6 +59,19 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return status.HTTP_200_OK
     
 
+class CRUDPost(CRUDBase):
+    def create(self, obj_in: CreateSchemaType, db: Session, user_id:int):
+        obj_in_data = jsonable_encoder(obj_in)
+        print(type(obj_in_data))
+        obj_in_data.update({"user_id":user_id})
+        db_obj = self.model(**obj_in_data)
+
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
+
+post_create = CRUDPost(Post)
 users = CRUDBase(User)
 post = CRUDBase(Post)
 comment = CRUDBase(Comment)

@@ -1,6 +1,6 @@
 
 from fastapi import Query
-from schema.post import PostOut
+from schema.post import PostForPage, PostOut
 from router import *
 from crud import *
 from sqlalchemy import func
@@ -10,6 +10,20 @@ router = APIRouter(
     prefix="/posts",
     tags=["Post"]
 )
+
+
+@router.get("/random/", response_model=List[PostOut])
+def get_random_posts(num_posts: int = Query(default=10, leq=10), db: Session = Depends(get_db)):
+    random_posts = Post.get_random_posts(num_posts=num_posts, session=db)
+    return random_posts
+
+
+@router.get("/latest/", response_model=List[PostOut])
+def get_random_posts(num_posts: int = Query(default=10, leq=10), db: Session = Depends(get_db)):
+    latest_posts = Post.get_latest_posts(num_posts=num_posts, session=db)
+    return latest_posts
+
+
 
 @router.get("/")
 def get_user_posts(
@@ -23,10 +37,10 @@ def get_user_posts(
         filter(Post.user_id==current_user.id).\
         filter(Post.title.contains(search)).\
         limit(limit).offset(skip).all()
-    
+    return posts
 
 
-@router.get("/{id}", status_code=200)
+@router.get("/{id}", response_model=PostForPage, status_code=status.HTTP_200_OK)
 def get_post(
         id:int,
         db: Session = Depends(get_db),
@@ -35,7 +49,7 @@ def get_post(
     post = db.query(Post).filter(Post.id==id).first()
     if not post:
         raise HTTPException(
-            status_code = result,
+            status_code = status.HTTP_404_NOT_FOUND,
             detail=f"post with id {id} does not exit"
         )
     if post.user_id != current_user.id:
@@ -43,14 +57,14 @@ def get_post(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Operation not permitted"
         )
-    return {'message': post}
+    return post
 
 
 @router.post("/", status_code= status.HTTP_201_CREATED)
 def create_post(new_post: PostCreate, db: Session = Depends(get_db),
                     current_user = Depends(oauth2.get_current_user)):
     
-    return post.create(new_post, db)
+    return post_create.create(new_post, db, current_user.id)
 
 
 
