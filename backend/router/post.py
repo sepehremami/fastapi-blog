@@ -1,5 +1,6 @@
 
 from fastapi import Query
+from oauth2 import get_current_user
 from schema.post import PostForPage, PostOut
 from router import *
 from crud import *
@@ -26,15 +27,30 @@ def get_random_posts(num_posts: int = Query(default=10, leq=10), db: Session = D
 
 
 @router.get("/")
-def get_user_posts(
+def get_all_posts(
         db: Session = Depends(get_db), 
-        current_user: User = Depends(oauth2.get_current_user),
+
         skip: int = 0,
         limit:int=10,
         search: Optional[str]=""):
 
     posts: List[Post] = db.query(Post).\
-        filter(Post.user_id==current_user.id).\
+        filter(Post.title.contains(search)).\
+        limit(limit).offset(skip).all()
+    return posts
+
+
+
+@router.get("/my-post")
+def get_user_posts(
+        db: Session = Depends(get_db), 
+        current_user = Depends(get_current_user),
+        skip: int = 0,
+        limit:int=10,
+        search: Optional[str]=""):
+
+    posts: List[Post] = db.query(Post).\
+        filter(Post.user_id == current_user.id).\
         filter(Post.title.contains(search)).\
         limit(limit).offset(skip).all()
     return posts

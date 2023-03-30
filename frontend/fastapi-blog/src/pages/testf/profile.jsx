@@ -65,7 +65,7 @@ const ProfileView = ({ posts }) => {
       <section className="" style={{ minHeight: "100vh" }}>
         <div className="container">
           {/*TODO - move to component*/}
-          <h1>Recipes - Better than all the REST</h1>
+       
           <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mb-4" onClick={() => setShowForm(!showForm)}>
             {showForm ? "Hide Form" : "Create Blog Post"}
           </button>

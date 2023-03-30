@@ -81,15 +81,16 @@ def update_hero(id: int, updated_user: UserBase,db: Session=Depends(get_db)):
 @router.get('/image/view')
 async def view_image(response: Response, db:Session=Depends(get_db), current_user=Depends(get_current_user)):
     image = db.query(Image).filter(Image.user_id==current_user.id).first()
-    img = ImagePillow.open(BytesIO(image.image))
-    buffer = BytesIO()
-    img.save(buffer, format='JPEG')
-    base64_encoded_image = base64.b64encode(image.image).decode("utf-8")
-    return base64_encoded_image
-
+    if image:
+        img = ImagePillow.open(BytesIO(image.image))
+        buffer = BytesIO()
+        img.save(buffer, format='JPEG')
+        base64_encoded_image = base64.b64encode(image.image).decode("utf-8")
+        return base64_encoded_image
+    return HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
 @router.post("/user/image/")
-async def upload_image(user_id: int ,db :Session = Depends(get_db), file: UploadFile = File(...), current_user=Depends(get_current_user)):
+async def upload_image(db :Session = Depends(get_db), file: UploadFile = File(...), current_user=Depends(get_current_user)):
     file_content = await file.read()
     image = Image(image=file_content, user_id=current_user.id)
     db.add(image)

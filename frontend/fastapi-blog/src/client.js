@@ -138,6 +138,7 @@ class FastAPIClient {
   sendImage(data) {
     return this.apiClient.post(`/user/image/`, {...data})
   }
+
 };
 
 

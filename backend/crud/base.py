@@ -62,7 +62,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 class CRUDPost(CRUDBase):
     def create(self, obj_in: CreateSchemaType, db: Session, user_id:int):
         obj_in_data = jsonable_encoder(obj_in)
-        print(type(obj_in_data))
+
         obj_in_data.update({"user_id":user_id})
         db_obj = self.model(**obj_in_data)
 

@@ -83,12 +83,11 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     phone = Column(String)
-   
+    
     password = Column(String)
     is_superuser = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow())
-
-
+    test = Column(Integer, nullable=True)
 
 
 class Image(Base):

@@ -13,7 +13,8 @@ oauth2_scheme = OAuth2PasswordBearer(
 
 
 SECRET_KEY = settings.secret_key
-print(SECRET_KEY)
+
+
 ALGORYTHM = settings.algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = int(settings.access_tocken_expire_minutes)
 

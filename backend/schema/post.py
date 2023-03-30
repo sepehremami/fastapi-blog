@@ -10,7 +10,7 @@ class PostCreate(BaseModel):
     title:str
     description:str
     category_id:int
-    user_id:int
+
     
 
 class PostOut(PostCreate):

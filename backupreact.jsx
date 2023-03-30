@@ -79,8 +79,7 @@ const MyProfile = () => {
         <div className="container">
            
                 {/*TODO - move to component*/}
-            <h1>
-                Recipes - Better than all the REST
+        
             </h1>
             {loading && (<div><p>Loading...</p></div>)}
             {blogs && (
