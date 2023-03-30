@@ -15,7 +15,7 @@ const CreateBlog = ({ onBlogCreated }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setloading(true);
-        const response = await client.createPost(title, body).then();
+        const response = await client.createPost(title, body, 1).then();
         if (response.status === 201) {
           setloading(false);
           setMessage('Blog post created successfully!');

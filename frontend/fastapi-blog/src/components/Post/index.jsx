@@ -5,7 +5,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import * as moment from "moment";
+
+
 const client = new FastAPIClient(config);
+const userJson = localStorage.getItem('user');
+const user = JSON.parse(userJson)
+
 
 const Post = ({ blog, showPostInfoModal }) => {
   const [post, setPost] = useState(blog);
@@ -30,10 +35,10 @@ const Post = ({ blog, showPostInfoModal }) => {
 
   let deleteButton;
   const buttonStyle =
-    "bg-red-500 text-sm px-4 py-2 leading-none rounded text-white  hover:bg-red-700 hover:text-bg-black";
+    "bg-red-500 px-4 py-2 leading-none rounded-xl text-white hover:bg-red-700 hover:text-bg-black";
 
-  if (isLoggedIn) {
-    deleteButton = (
+  if (isLoggedIn && post.user_id===user.id) {
+    deleteButton= (
       <button
         className={buttonStyle}
         onClick={(e) => {
@@ -50,7 +55,7 @@ const Post = ({ blog, showPostInfoModal }) => {
       <>
         <div
           // onClick={(e) => {showPostInfoModal() ; e.stopPropagation()}}
-          className="flex flex-wrap items-end w-full transition duration-500 ease-in-out transform bg-black border-2 border-gray-600 rounded-lg hover:border-white mb-3"
+          className="flex flex-wrap items-end w-full transition duration-500 ease-in-out transform bg-[#1a2d55] border-2 border-gray-600 rounded-lg hover:border-white mb-3"
         >
           <div className="w-full xl:w-1/4 md:w-1/4">
             <div className="relative flex flex-col h-full p-8 ">
@@ -59,20 +64,22 @@ const Post = ({ blog, showPostInfoModal }) => {
               </h2>
               <h2 className="mb-4 font-semibold tracking-widest text-white uppercase title-font">
                 {post?.id}
+                
               </h2>
             </div>
           </div>
 
           <div className="m-10">
             <Link
-			className="bg-[#14B8A6] rounded-default" 
+			className="bg-[#255cd4]  hover:bg-[#2852ad] text-white rounded-default p-2 rounded-xl " 
               to={`/posts/${post.id}`}
             >
               View Post
             </Link>
           </div>
-          <div
-		  className="m-10"
+      <div
+		  
+      className="m-10"
 		  >{deleteButton}</div>
         </div>
       </>

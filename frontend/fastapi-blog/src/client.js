@@ -91,12 +91,12 @@ class FastAPIClient {
     return client;
   }
 
-  getPost(recipeId) {
-    return this.apiClient.get(`/posts/${recipeId}`);
+  getPost(postId) {
+    return this.apiClient.get(`/posts/${postId}`);
   }
 
   getPosts(keyword, limit, skip) {
-    return this.apiClient.get(`/posts/search/?skip=${skip}&limit=${limit}&search=${keyword}`).then(({data}) => {
+    return this.apiClient.get(`/posts/?skip=${skip}&limit=${limit}&search=${keyword}`).then(({data}) => {
       return data;
     });
   }
@@ -120,16 +120,35 @@ class FastAPIClient {
     });
   }
 
-  createPost(title, description) {
+  createPost(title, description, category_id) {
     const recipeData = {
       title,
-      description
+      description,
+      category_id
     };
     return this.apiClient.post(`/posts/`, recipeData);
   }
 
   deletePost(PostId) {
     return this.apiClient.delete(`/posts/${PostId}`);
+  }
+
+  leaveComment(post_id, parent_id, description) {
+    const commentData = {
+      post_id, 
+      parent_id,
+      description,
+    }
+    console.log(commentData)
+    return this.apiClient.post(`/comment/`, commentData);
+  }
+
+  getImage() {
+    return this.apiClient.get(`/image/view/`);
+  }
+
+  sendImage(data) {
+    return this.apiClient.post(`/user/image/`, {...data})
   }
 };
 

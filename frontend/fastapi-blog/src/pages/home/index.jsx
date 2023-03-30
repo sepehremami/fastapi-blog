@@ -36,7 +36,7 @@ const Home = () => {
 
           setLoading(true)
 
-          client.getPosts(searchValue, 10,0).then((data) => {
+          client.getPosts(searchValue, 10, 0).then((data) => {
                setLoading(false)
                setBlogs(data)
           });

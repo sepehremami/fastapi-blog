@@ -4,6 +4,7 @@
 
 
 .App {
+  background-color: #111827; 
   text-align: center;
   height: 100%;
 }
@@ -48,3 +49,4 @@
 .latest h1 {
   font-size: large;
 }
+

@@ -62,7 +62,7 @@ function DashboardHeader() {
       displayButton = <li className="border-t-sky-800 border-r-blue-600 border-b-sky-400 border-l-sky-300 transition ease-out duration-150 md:hover:bg-sky-700 md:hover:border-sky-700 md:border rounded-2xl p-2.5 -my-2.5 px-10">
                       <button onClick={handleLogin}
                               className="block py-2 pl-3 pr-4 md:text-gray-200 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-slate-900 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                           <p className="text-center">JOIN US</p></button>
+                           <p className="text-center">LOGIN</p></button>
                       </li>;
     }
 
@@ -70,69 +70,6 @@ function DashboardHeader() {
 
   return (
       <div>
-      {/*    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">*/}
-      {/*  <div className="flex items-center flex-shrink-0 text-white mr-6">*/}
-      {/*      <span className="font-semibold text-xl tracking-tight">FastBlog - A Project</span>*/}
-
-      {/*  </div>*/}
-      {/*  <div className="block lg:hidden">*/}
-
-      {/*  <button*/}
-      {/*      className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"*/}
-      {/*      onClick={() => setToggleMenu(!toggleMenu)}>*/}
-
-      {/*  </button>*/}
-
-      {/*  </div>*/}
-
-
-      {/*  <div className={`animate-fade-in-down w-full ${toggleMenu ? "block" : "hidden"} flex-grow lg:flex lg:items-center lg:w-auto`}>*/}
-      {/*      <div className="text-sm align-middle lg:flex-grow">*/}
-      {/*          <a href={"http://0.0.0.0:8000/docs"} target={"_blank"} rel={"noreferrer"}*/}
-      {/*              className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4">*/}
-      {/*              API Docs*/}
-      {/*          </a>*/}
-
-      {/*          <Link to="/"*/}
-      {/*              className="block lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4">*/}
-      {/*              Home*/}
-      {/*          </Link>*/}
-
-      {/*          {!isLoggedIn && <Link*/}
-      {/*              className="block lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4"*/}
-      {/*              to={`/sign-up`}>*/}
-      {/*              Create Account*/}
-      {/*          </Link>}*/}
-
-
-      {/*          {isLoggedIn && <Link*/}
-      {/*              className="blockmr-5 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4"*/}
-      {/*              to={`/make-post`}>*/}
-      {/*              Create Post*/}
-      {/*          </Link>}*/}
-
-
-      {/*          {isSuperUser() && <Link to={'/posts'}*/}
-      {/*              className='block lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4'>*/}
-      {/*              All Posts*/}
-      {/*          </Link>}*/}
-
-      {/*          {isLoggedIn && <Link*/}
-      {/*              className="block lg:inline-block lg:mt-0 text-teal-200 hover:text-white mx-4"*/}
-      {/*              to={`/auth/me`}>*/}
-      {/*              View Profile*/}
-      {/*          </Link>}*/}
-
-      {/*      </div>*/}
-      {/*      <div>*/}
-      {/*        {displayButton}*/}
-      {/*      </div>*/}
-      {/*  </div>*/}
-
-
-      {/*</nav>*/}
-
-
 
           <nav className="bg-primary border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 ">
               <div className={`container flex flex-wrap items-center justify-between mx-auto `} >
